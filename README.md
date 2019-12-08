@@ -22,3 +22,13 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+# 毕业项目相关事宜稳定编写
+## 开发环境：
+
+|      工具      |  版本 |
+|:-----------:|:-----------:|
+|   webstrom    |   2019.3  |
+|   Vue-cli     |  4.0.5    |
+|  Vue          |   v2.6.10 |
+
