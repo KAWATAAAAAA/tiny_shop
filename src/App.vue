@@ -3,31 +3,33 @@
     <div class="reference"></div>
     <header>
       <div class="logo-user-status">
-        <img src="./assets/logo.png" @click="toHome">
+        <img src="./assets/logo.png" @click="toHome" alt="logo">
         <UserInfo />
       </div>
       <Nav />
     </header>
     <div class="main-body">
-      <router-view></router-view>
+      <router-view />
     </div>
     <footer>
 
     </footer>
+    <ShoppingCart />
   </div>
 </template>
 <script>
 
  // import Login from './components/Login'
- import $ from 'jquery'
+
  import Nav from './components/Nav'
  import UserInfo from './components/UserInfo'
-
+ import ShoppingCart from './components/ShoppingCart'
   export default {
     name:'App',
     components:{
       Nav,
-      UserInfo
+      UserInfo,
+      ShoppingCart
     },
     methods:{
       toHome(){
@@ -61,6 +63,8 @@
     padding: 0;
     box-sizing: border-box;
     *border: 1px solid red;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   html,body{
@@ -97,7 +101,7 @@
     *position: sticky;
     top:0;
     z-index: 999;
-    box-shadow: 0px 2px 10px -8px rgba(0,0,0,.3);
+    box-shadow: 0 2px 10px -8px rgba(0,0,0,.3);
   }
   .main-body{
     width: 100%;
@@ -105,6 +109,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: all .5s ease;
   }
   footer{
     width: 100%;

@@ -11,18 +11,43 @@
       </li>
     </ul>
     <div class="search-container">
-      <input id="search" name="search" class="search-input" type="text" placeholder="请输入关键">
+      <input id="search" name="search" class="search-input" type="text" placeholder="请输入关键" v-model="searchText">
+      <button class="btn btn-outline-success my-2 my-sm-0 search-commit" :class="{isDisabled}" :disabled="isDisabled" type="submit" @click="send">Search</button>
     </div>
   </nav>
 </template>
 
 <script>
   export default {
-    name: 'Nav'
+    name: 'Nav',
+    data(){
+      return{
+        searchText:'',
+        isDisabled:true
+      }
+    },
+    computed:{
+
+    },
+    watch:{
+      searchText(newvalue){
+        console.log(newvalue)
+        newvalue == ""?this.isDisabled = true:this.isDisabled = false;
+      }
+    },
+    methods:{
+      send(){
+        alert("ajax")
+      }
+    }
   }
 </script>
 
 <style scoped lang="scss">
+.isDisabled{
+  cursor: not-allowed !important;
+  color: #999999 !important;
+}
   nav {
     width: 1200px;
     height: 45px;
@@ -97,15 +122,32 @@
       justify-content: center;
       align-items: center;
       height: 100%;
+      position: relative;
+
+      .search-commit{
+        position:absolute;
+        right: 0;
+        top:50%;
+        transform:translateY(-50%);
+        outline: none;
+        border: 1px solid #ced4da;
+        border-top:none;
+        border-bottom:none;
+        border-right:none;
+
+        &:focus{
+          outline:0;
+          box-shadow: none !important;
+        }
+      }
     }
     .search-input{
       width: 360px;
-      height: 60%;
+      height: 35.75px;
       outline: none;
-      border: 1px solid #999999;
-      border-radius: 0px;
+      border: 1px solid #ced4da;
+      border-radius: .25rem;
       caret-color: red;
-
       text-indent: 1rem;
     }
   }
