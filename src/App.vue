@@ -1,12 +1,8 @@
 <template>
   <div id="app">
     <div class="reference"></div>
-    <header>
-      <div class="logo-user-status">
-        <img src="./assets/logo.png" @click="toHome" alt="logo">
-        <UserInfo />
-      </div>
-      <Nav />
+    <header v-show="$route.name !== 'Login'&& $route.name !== 'Register'">
+      <Header />
     </header>
     <div class="main-body">
       <router-view />
@@ -20,22 +16,15 @@
 <script>
 
  // import Login from './components/Login'
-
- import Nav from './components/Nav'
- import UserInfo from './components/UserInfo'
+ import Header from './views/Header'
  import ShoppingCart from './components/ShoppingCart'
   export default {
     name:'App',
     components:{
-      Nav,
-      UserInfo,
+      Header,
       ShoppingCart
     },
-    methods:{
-      toHome(){
-        this.$router.push('/')
-      }
-    },
+
     mounted () {
       let nav = document.querySelector('header');
       let reference = document.querySelector(".reference");
@@ -78,11 +67,15 @@
     left: 0;
     width: 100%;
   }
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset; // 清除chrom浏览器的表单记忆自动填充的蓝色背景
+  }
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  width: 100%;
   height:auto;
   background: #f5f6f7;
   display: flex;
@@ -90,7 +83,7 @@
   flex-wrap: wrap;
   header{
     width: 100%;
-    height: 90px;
+    height: 45px;
     background: white;
     padding: 0 !important;
     display: flex;
@@ -118,24 +111,7 @@
   }
 
 }
-.logo-user-status{
-  width:1200px;
-  height: 45px;
-  border-bottom: 1px solid #eaeaea;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  img{
-    display: block;
-    transform: scale(0.45) translateX(-50%);
 
-    &:hover{
-      cursor: pointer;
-    }
-  }
-}
 
 
 </style>

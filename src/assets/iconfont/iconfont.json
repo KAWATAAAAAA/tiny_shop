@@ -1,0 +1,101 @@
+{
+  "id": "1600501",
+  "name": "ext-iconLibrary",
+  "font_family": "iconfont",
+  "css_prefix_text": "ext-icon-",
+  "description": "When you using elemeui or other icon library, use this extension
+",
+  "glyphs": [
+    {
+      "icon_id": "554365",
+      "name": "购物袋",
+      "font_class": "iconset0316",
+      "unicode": "e6d7",
+      "unicode_decimal": 59095
+    },
+    {
+      "icon_id": "911058",
+      "name": "order",
+      "font_class": "order",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "1030014",
+      "name": "message",
+      "font_class": "message",
+      "unicode": "e768",
+      "unicode_decimal": 59240
+    },
+    {
+      "icon_id": "1462922",
+      "name": "update",
+      "font_class": "update1",
+      "unicode": "e642",
+      "unicode_decimal": 58946
+    },
+    {
+      "icon_id": "1725617",
+      "name": "消息",
+      "font_class": "xiaoxi",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "3854332",
+      "name": "消息",
+      "font_class": "xiaoxi1",
+      "unicode": "e65c",
+      "unicode_decimal": 58972
+    },
+    {
+      "icon_id": "4472520",
+      "name": "message",
+      "font_class": "message1",
+      "unicode": "e729",
+      "unicode_decimal": 59177
+    },
+    {
+      "icon_id": "5924891",
+      "name": "power",
+      "font_class": "power",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "6068186",
+      "name": "edit_tool_savetempla",
+      "font_class": "edit_tool_savetempla",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "8827276",
+      "name": "delete-calendar",
+      "font_class": "delete-calendar",
+      "unicode": "e94a",
+      "unicode_decimal": 59722
+    },
+    {
+      "icon_id": "10043884",
+      "name": "Personal",
+      "font_class": "Personal",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "10139936",
+      "name": "view",
+      "font_class": "view",
+      "unicode": "e69e",
+      "unicode_decimal": 59038
+    },
+    {
+      "icon_id": "10139980",
+      "name": "view-off",
+      "font_class": "view-off",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    }
+  ]
+}

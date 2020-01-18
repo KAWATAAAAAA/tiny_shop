@@ -1,16 +1,12 @@
 <template>
-    <div class="cart-container" :class="{showCart:getIsCartOpen}">
+    <div class="cart-container" :class="{showCart:isCartOpen}">
 
     </div>
 </template>
 
 <script>
-  /*
-  * 原始的 vuex 操作方法 :class="{showCart:this.$store.getters.getIsCartOpen}"
-  * this.$store.getters.getIsCartOpen  特别长
-  * 使用 vuex 新的API（map映射）来替换，
-  * */
-  import {mapGetters} from 'vuex'
+
+  import {mapState} from 'vuex'
 
   export default {
     name: 'ShoppingCart',
@@ -20,8 +16,7 @@
       }
     },
     computed:{
-      //...mapState(['isCartOpen'])
-      ...mapGetters(['getIsCartOpen'])
+      ...mapState('commonState',['isCartOpen'])
     }
   }
 </script>

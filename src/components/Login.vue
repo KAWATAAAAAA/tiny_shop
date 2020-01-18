@@ -1,42 +1,201 @@
 <template>
-  <div class="container">
-    <h1 style="font-family: 'consolas' ">Welcome to back</h1>
-    <div class="form-head">
-      <h2>Every Day，乐在分享</h2>
-      <h2><a href="">立即登陆</a></h2>
-    </div>
-    <form action="" method="post" class="regiest-area">
-      <div class="form-group">
+  <div class="login-wrapper">
 
-        <input type="text" id="user-account-num" class="form-control" name="userAccountNum" placeholder="手机号/邮箱"
-               data-toggle="tooltip" data-placement="bottom" title="昵称由1-10个字符组成">
-        <div class="input-ok"></div>
+    <el-form ref="form" :model="form">
+      <section><h1>欢迎回来！</h1></section>
+      <el-input placeholder="手机号" v-model="form.userPhoneNum"  :class="{'base-info':true}"/>
+      <el-input placeholder="请输入密码" v-model="form.userPassword" show-password  :class="{'base-info':true}"/>
+      <el-button type="primary" @click="signIn" class="submit">立即登录</el-button>
+      <div class="form-footer">
+        <p><router-link to="/">忘记密码？</router-link></p>
+        <p @click="getPublicKey">还没有账户？<router-link to="/Login">现在创建账户</router-link></p>
       </div>
-      <div class="form-group">
-
-        <input type="password" id="user-password" class="form-control" name="userPassword" placeholder="密码" data-toggle="tooltip"
-               data-placement="bottom" title="密码由6-12位数字、字母或特殊字符组成,不能包含空格">
-        <div class="eye-close" id="eye"></div>
-        <div class="input-ok"></div>
-      </div>
-      <div class="form-group">
-
-        <input type="submit" id="submit" class="btn btn-primary" value="登陆" disabled="disabled" title="请先填入所需信息">
-      </div>
-
-    </form>
+    </el-form>
   </div>
 </template>
 
 <script>
 
-  import '../assets/js/login_regiest_form_check'
+
+  import Api from '../api'
+  import {mapActions,mapState} from 'vuex'
+
   export default {
-    name: 'Login'
+    name: 'Login',
+    data(){
+      return{
+        form:{
+          userPhoneNum:"",
+          userPassword:""
+        },
+
+      }
+    },
+    computed:{
+      ...mapState('userInfo',['user'])
+    },
+    methods:{
+      ...mapActions('commonState',['setToken']),
+      ...mapActions('userInfo',['setStatus']),
+      signIn(){
+        let msg = {
+          userPhoneNum:this.form.userPhoneNum,
+          userPassword:this.form.userPassword
+        }
+        if(this.user.status){
+          this.$message({
+            type:'warning',
+            message:'请勿重复登录！'
+          })
+          return ;
+        }
+        else
+        Api.signIn(msg).then((response)=>{
+          console.log(response)
+          if (response.status == 200)
+          {
+            let data = response.data
+            this.setToken({data}) //记录token
+            window.localStorage.setItem('token',data)
+            this.setStatus() // 设置用户状态
+            this.$message({
+              type:'success',
+              message:'登录成功！'
+            })
+            setTimeout(()=>{
+              this.$router.push('/')
+            },2000)
+          }
+          else{
+            this.$message({
+              type:'error',
+              message:'登录失败！' + response.message
+            })
+          }
+
+        }).catch((error)=>{
+          console.log(error)
+        })
+      },
+      getPublicKey(){
+
+        Api.getPublicKey().then( response =>{
+          console.log(response)
+        }).catch(error =>{
+          console.log(error)
+        })
+      }
+    }
   }
 </script>
 
-<style src="../assets/css/login_regiest_style.css" />
-<style scoped>
+<style scoped lang="scss">
+  *{
+    *border: 1px solid red;
+  }
+  .login-wrapper{
+    width: 100%;
+    height: 100vh;
+    background: #FFffff url("../assets/images/login_page.png") no-repeat 100% 100%;
+    position: relative;
 
+    section{
+      display: block;
+      width: 100%;
+      text-align: left;
+      font-size: 2rem;
+      margin-top: 0;
+      margin-bottom: 40px;
+      h1{
+        display: inline-block;
+        text-indent: 60px;
+
+      }
+    }
+  }
+.el-form{
+  width: 520px;
+  height: 500px;
+
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  transform: translateX(50%) translateY(50%);
+  .base-info{
+    width: 80%;
+    height: 57px;
+    margin: 0 0 20px 0;
+
+  }
+  .submit{
+    width: 80%;
+    height: 57px;
+    padding: 0 15px;
+    border: none;
+    opacity:.65;
+    font-size: 1.2rem;
+    background: #ef3420;
+    margin-top: 10px;
+    box-shadow: 1px 1px 2px 0px rgba(0,0,0,.5);
+    &:active{
+      box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
+    }
+  }
+  .form-footer{
+    width: 80%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    p{
+      display: block;
+      padding: .8rem 0;
+
+      a{
+        text-decoration: none;
+        color: #139af9;
+      }
+    }
+  }
+}
+  @media screen and (max-width: 375px){
+    .el-form{
+      width: 100%;
+
+      position: absolute;
+      top: 50%;
+      transform: translateX(0) translateY(-50%);
+    }
+    .login-wrapper{
+      background: #FFffff ;
+    }
+  }
+</style>
+<style lang="scss">
+  .login-wrapper{
+    .base-info{
+      input {
+
+        line-height: 57px !important;
+        height: 57px !important;
+
+      }
+        .el-input__clear{
+
+          position: relative;
+          width: 3rem;
+          font-size: 1.8rem;
+          &::before{
+            position:absolute;
+            left:50%;
+            top:50%;
+            transform:translateX(-50%) translateY(-50%);
+
+          }
+      }
+    }
+  }
 </style>

@@ -4,14 +4,14 @@
         <Carousel />
         <GoodsList />
       </div>
-      <div class="content-right">
+      <aside class="content-right">
         <HotGoods />
-      </div>
+      </aside>
     </div>
 </template>
 
 <script>
-  import Carousel from './Carousel'
+  import Carousel from '../components/Carousel'
   import GoodsList from './GoodsList'
   import HotGoods from './HotGoods'
   export default {
