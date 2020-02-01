@@ -1,9 +1,10 @@
 import axios from 'axios'
 import router from "../router/index";
+import store from '../store'
 /*
 * 或许我应该称这个文件为 fetch 更贴切，因为内部实现了一套 Promise的操作
 * */
-axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = 'http://localhost:8080/tiny_shop'
 axios.defaults.timeout = 10000
 axios.interceptors.request.use(
   config => {
@@ -20,9 +21,9 @@ axios.interceptors.request.use(
 )
 axios.interceptors.response.use(
   response =>{
-
-    if (response.data.status !== 200){
-      console.log('nb1')
+    console.log(response)
+    if (response.data.code === 10002 || response.data.code === 401){
+      store.dispatch('userInfo/clearUserInfo')
       router.push({
         name:'Login'
       })
@@ -35,29 +36,32 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 )
-export default function ajax(url,type="GET",data={}) {
+export default function ajax(url,type="GET",data={},contentType = 'application/json') {
+  let promise
+  let dataString = ""
+  /*
+  * 上传文件时的默认参数必须为 contentType：multipart/form-data;
+  * 而 axios 默认的是 application/json，但我没做更改
+  * 应该是请求的时候自动识别了传的参数，进行了 contentType 的改变
+  * */
+  if(type === 'GET'){
+
+    /*
+    * www.baidu.com?name=nenglong&password=123456
+    * */
+    Object.keys(data).forEach((key)=>{
+      dataString += key + "=" + data[key] + '&'
+    })
+    dataString = dataString.substring(0,dataString.lastIndexOf('&'))
+    url = url + '?' + dataString
+
+    promise = axios.get(url)
+  }
+  else{
+    promise = axios.post(url,data)
+  }
+
   return new Promise((resolve, reject)=>{
-    let promise
-    let dataString = ""
-
-    if (dataString !== "")
-    {
-      /*
-      * www.baidu.com?name=nenglong&password=123456
-      * */
-      Object.keys(data).forEach((key)=>{
-        dataString += key + "=" + data[key] + '&'
-      })
-      dataString = dataString.substring(0,dataString.lastIndexOf('&'))
-      url = url + '?' + dataString
-    }
-    if(type === 'GET'){
-      promise = axios.get(url)
-    }
-    else{
-      promise = axios.post(url,data)
-    }
-
     promise.then(response =>{
       resolve(response.data)
     }).catch(error => {

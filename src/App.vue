@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="reference"></div>
-    <header v-show="$route.name !== 'Login'&& $route.name !== 'Register'">
+    <header v-show="$route.name !== 'login'&& $route.name !== 'register'">
       <Header />
     </header>
     <div class="main-body">
@@ -14,15 +14,13 @@
   </div>
 </template>
 <script>
-
- // import Login from './components/Login'
  import Header from './views/Header'
  import ShoppingCart from './components/ShoppingCart'
   export default {
     name:'App',
     components:{
       Header,
-      ShoppingCart
+      ShoppingCart,
     },
 
     mounted () {

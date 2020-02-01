@@ -21,6 +21,16 @@
   import {mapActions,mapState} from 'vuex'
 
   export default {
+    created() {
+      let that = this;
+      document.onkeypress = function(e) {
+        var keycode = document.all ? event.keyCode : e.which;
+        if (keycode == 13) {
+          that.signIn();// 登录方法名
+          return false;
+        }
+      };
+    },
     name: 'Login',
     data(){
       return{
@@ -32,11 +42,12 @@
       }
     },
     computed:{
-      ...mapState('userInfo',['user'])
+      ...mapState('userInfo',['user']),
+      ...mapState('commonState',['token'])
     },
     methods:{
       ...mapActions('commonState',['setToken']),
-      ...mapActions('userInfo',['setStatus']),
+      ...mapActions('userInfo',['setStatus','setUserInfo']),
       signIn(){
         let msg = {
           userPhoneNum:this.form.userPhoneNum,
@@ -47,16 +58,18 @@
             type:'warning',
             message:'请勿重复登录！'
           })
+          this.$router.push('/')
           return ;
         }
         else
         Api.signIn(msg).then((response)=>{
           console.log(response)
-          if (response.status == 200)
+          if (response.code === 200)
           {
             let data = response.data
-            this.setToken({data}) //记录token
+
             window.localStorage.setItem('token',data)
+            this.setToken(data) //记录token
             this.setStatus() // 设置用户状态
             this.$message({
               type:'success',
@@ -64,7 +77,7 @@
             })
             setTimeout(()=>{
               this.$router.push('/')
-            },2000)
+            },2000) //2000
           }
           else{
             this.$message({

@@ -1,11 +1,11 @@
 <template>
     <ul class="user-info-container">
       <li class="user-info" v-if="user.status">
-        wuyuwei2016
+        {{user.userNickName}}
         <i class="el-icon-arrow-down" style="font-size: 1.25rem"/>
         <ul class="sub-info">
           <li class="user-status">
-            <div class="head-img"></div>
+            <router-link to="/user"><div class="head-img"><img :src="user.userAvatar"/></div></router-link>
           </li>
           <li>
             <i class="el-icon-s-comment" />
@@ -23,7 +23,7 @@
       </li>
       <li class="user-info" v-else>
 
-        <router-link to="Login">请登录！</router-link>
+        <router-link to="/user/Login">请登录！</router-link>
         <i class="iconfont ext-icon-Personal" />
       </li>
       <li class="message-container">
@@ -51,8 +51,8 @@
       ...mapState('userInfo',['user'])
     },
     methods:{
-      ...mapActions('commonState',['showCart']),
-      ...mapActions('userInfo',['removeStatus']),
+      ...mapActions('commonState',['showCart','setToken']),
+      ...mapActions('userInfo',['setStatus','removeStatus','setUserInfo']),
       show(){
         this.isShow = !this.isShow
       },
@@ -63,18 +63,42 @@
       }
 
     },
+    watch:{
+      '$route'(to,from){
+        if (from.name === 'Login'){
+          this.$router.go(0)
+        }
+      }
+    },
     beforeMount () {
       //在挂载模板之前，要拿到用户数据
+      /*有token则发送请求 获取信息，没有token则跳转登陆*/
       console.log("在挂载模板之前，要拿到用户数据")
-      if (window.localStorage.getItem('token'))
+      let token = window.localStorage.getItem('token')
+      if (token !== undefined || token !== null)
       {
-        console.log(window.localStorage.getItem('token'))
         Api.getUserInfo().then( response =>{
           console.log(response)
+          if (response.code === 200)
+          {
+            this.setStatus()
+            this.setToken(token)
+            let data = response.data
+            this.setUserInfo({data})
+          }
+
+          if (response.code === 10002)
+          {
+            this.removeStatus()
+            this.$router.push('/user/login')
+          }
+
         }).catch( error =>{
           console.log(error)
         })
       }
+      else
+        this.$router.push('/user/login')
     },
     mounted () {
       console.log("状态栏组件被加载")
@@ -98,10 +122,10 @@
   li{
     display: flex;
     justify-content: center;
-
     align-items: center;
     padding: 0 20px;
     height: 100%;
+    font-size: 0.9rem;
     &:hover{
       cursor: pointer;
     }
@@ -183,6 +207,12 @@
         border-radius: 50%;
         transform:translateX(-50%);
         background: #42b983;
+
+        img{
+          width: 100%;
+          height: 100%;
+          border-radius:50% ;
+        }
       }
     }
     .exit{

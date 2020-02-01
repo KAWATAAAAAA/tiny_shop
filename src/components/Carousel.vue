@@ -14,8 +14,9 @@
     data(){
       return{
         images:[
-          require("../assets/images/loop1.png"),
-          require("../assets/images/loop2.png")
+          require("../assets/images/394e661030853a23fc12524701a748c9.png"),
+          require("../assets/images/510598e6d8467938b3b00132ee98f469.png"),
+          require("../assets/images/fa6f3213df86ed0be968b7e7159c80ff.jpg")
         ]
       }
     },
@@ -35,7 +36,7 @@
 
       .el-carousel__container{
         width: 100%;
-        height: 410px;
+        height: 465px;
 
       }
     }

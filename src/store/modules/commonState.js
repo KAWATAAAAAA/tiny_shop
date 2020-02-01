@@ -8,8 +8,8 @@ const getters = {
 
 }
 const mutations = {
-  [SET_TOKEN](state,{data}){
-    state.token = data
+  [SET_TOKEN](state,token){
+    state.token = token
   },
   setIsCartOpen(state){
     state.isCartOpen = !(state.isCartOpen)
@@ -17,8 +17,9 @@ const mutations = {
 }
 
 const actions = {
-  setToken(context,{data}){
-    context.commit(SET_TOKEN,{data})
+  setToken(context,token){
+
+    context.commit(SET_TOKEN,token)
   },
   showCart(context){
     context.commit('setIsCartOpen')
