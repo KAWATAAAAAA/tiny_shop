@@ -10,20 +10,11 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-# 毕业项目相关事宜稳定编写
+# 毕业设计项目相关事宜稳定编写
 ## 开发环境：
 
 |      工具      |  版本 |
@@ -34,5 +25,18 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 Server version: 8.0.13 MySQL Community Server - GPL
 
+
+# 已完成功能
+- 登陆
+- 注册
+- 鉴权
+    - 路由守卫拦截
+    - axios response 消息拦截
+- 个人主页
+    - 信息编辑
+    - 商家入驻
+    
+
 # 接下来要完成的工作
-> 用户界面的设计 仿照bilibli
+店铺首页
+商品上架

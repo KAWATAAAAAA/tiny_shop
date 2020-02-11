@@ -22,7 +22,8 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response =>{
     console.log(response)
-    if (response.data.code === 10002 || response.data.code === 401){
+    if (response.data.code === 10002 || response.data.code === 10001  || response.data.code === 401){
+      alert("未登录，或者已经过期，或签名不匹配，我马上清除用户信息")
       store.dispatch('userInfo/clearUserInfo')
       router.push({
         name:'Login'
@@ -44,22 +45,30 @@ export default function ajax(url,type="GET",data={},contentType = 'application/j
   * 而 axios 默认的是 application/json，但我没做更改
   * 应该是请求的时候自动识别了传的参数，进行了 contentType 的改变
   * */
-  if(type === 'GET'){
+  switch(type){
+    case 'GET':{
+      /*
+          * www.baidu.com?name=nenglong&password=123456
+          * */
+      Object.keys(data).forEach((key)=>{
+        dataString += key + "=" + data[key] + '&'
+      })
+      dataString = dataString.substring(0,dataString.lastIndexOf('&'))
+      url = url + '?' + dataString
 
-    /*
-    * www.baidu.com?name=nenglong&password=123456
-    * */
-    Object.keys(data).forEach((key)=>{
-      dataString += key + "=" + data[key] + '&'
-    })
-    dataString = dataString.substring(0,dataString.lastIndexOf('&'))
-    url = url + '?' + dataString
+      promise = axios.get(url)
+    }break;
+    case 'POST':{
+      promise = axios.post(url,data)
+    }break;
+    case 'PUT':{
+      promise = axios.put(url,data)
+    }break;
+    case 'PATCH':{
+      promise = axios.patch(url,data)
+    }break;
+  }
 
-    promise = axios.get(url)
-  }
-  else{
-    promise = axios.post(url,data)
-  }
 
   return new Promise((resolve, reject)=>{
     promise.then(response =>{

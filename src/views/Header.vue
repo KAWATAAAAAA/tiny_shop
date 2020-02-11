@@ -2,13 +2,16 @@
     <div class="status">
       <img src="../assets/logo.png" @click="toHome" alt="logo">
       <Search />
-      <UserStatusBar/>
+      <keep-alive>
+        <UserStatusBar/>
+      </keep-alive>
+
     </div>
 </template>
 
 <script>
-  import Search from '../components/Search'
-  import UserStatusBar from '../components/UserStatusBar'
+  import Search from '../components/Header/Search'
+  import UserStatusBar from '../components/Header/UserStatusBar'
   export default {
     name: 'Header',
     components:{

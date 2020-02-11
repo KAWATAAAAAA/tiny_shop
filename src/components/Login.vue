@@ -8,7 +8,7 @@
       <el-button type="primary" @click="signIn" class="submit">立即登录</el-button>
       <div class="form-footer">
         <p><router-link to="/">忘记密码？</router-link></p>
-        <p @click="getPublicKey">还没有账户？<router-link to="/Login">现在创建账户</router-link></p>
+        <p @click="getPublicKey">还没有账户？<router-link :to="{name:'Register'}">现在创建账户</router-link></p>
       </div>
     </el-form>
   </div>
@@ -22,6 +22,7 @@
 
   export default {
     created() {
+      console.log("login created")
       let that = this;
       document.onkeypress = function(e) {
         var keycode = document.all ? event.keyCode : e.which;
@@ -68,9 +69,10 @@
           {
             let data = response.data
 
-            window.localStorage.setItem('token',data)
+            window.localStorage.setItem('token',data.token)
             this.setToken(data) //记录token
             this.setStatus() // 设置用户状态
+            this.setUserInfo({data})
             this.$message({
               type:'success',
               message:'登录成功！'
@@ -108,8 +110,8 @@
   }
   .login-wrapper{
     width: 100%;
-    height: 100vh;
-    background: #FFffff url("../assets/images/login_page.png") no-repeat 100% 100%;
+    height: calc(100vh - 45px);
+    background: #FFffff url("../assets/images/login_bg.png") no-repeat 100% 100%;
     position: relative;
 
     section{
@@ -196,11 +198,10 @@
         height: 57px !important;
 
       }
-        .el-input__clear{
-
+        .el-input__clear{ /*eye*/
           position: relative;
           width: 3rem;
-          font-size: 1.8rem;
+          font-size: 1.3rem;
           &::before{
             position:absolute;
             left:50%;

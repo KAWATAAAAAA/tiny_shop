@@ -11,11 +11,11 @@
 </template>
 
 <script>
-  import Carousel from '../components/Carousel'
-  import GoodsList from './GoodsList'
-  import HotGoods from './HotGoods'
+  import Carousel from '../components/Home/Carousel'
+  import GoodsList from '../components/Home/GoodsList'
+  import HotGoods from '../components/Home/HotGoods'
   export default {
-    name: 'home',
+    name: 'Home',
     components: {
       Carousel,
       GoodsList,

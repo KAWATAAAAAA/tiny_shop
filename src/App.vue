@@ -1,11 +1,15 @@
 <template>
   <div id="app">
     <div class="reference"></div>
-    <header v-show="$route.name !== 'login'&& $route.name !== 'register'">
-      <Header />
+    <header v-show="$route.name !== 'Login'&& $route.name !== 'Register'">
+      <keep-alive>
+        <Header />
+      </keep-alive>
     </header>
     <div class="main-body">
-      <router-view />
+      <keep-alive exclude="User">
+        <router-view></router-view>
+      </keep-alive>
     </div>
     <footer>
 

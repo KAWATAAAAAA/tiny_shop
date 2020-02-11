@@ -5,7 +5,14 @@
         <i class="el-icon-arrow-down" style="font-size: 1.25rem"/>
         <ul class="sub-info">
           <li class="user-status">
-            <router-link to="/user"><div class="head-img"><img :src="user.userAvatar"/></div></router-link>
+            <div class="head-img">
+              <router-link :to="{path:'/user/' + user.userId}">
+                <img :src="avatar" />
+              </router-link>
+            </div>
+            <div>
+
+            </div>
           </li>
           <li>
             <i class="el-icon-s-comment" />
@@ -23,10 +30,10 @@
       </li>
       <li class="user-info" v-else>
 
-        <router-link to="/user/Login">请登录！</router-link>
+        <router-link :to="{name:'Login'}">请登录！</router-link>
         <i class="iconfont ext-icon-Personal" />
       </li>
-      <li class="message-container">
+      <li class="message-container" @click="$router.push('/chat')">
         消息
         <i class="iconfont ext-icon-xiaoxi1" />
       </li>
@@ -39,16 +46,19 @@
 
 <script>
   import {mapActions,mapState} from 'vuex'
-  import Api from '../api'
+  import Api from '../../api'
   export default {
     name: 'UserStatusBar',
     data(){
       return{
-        isShow:true
+        isShow:true,//购物车
       }
     },
     computed:{
-      ...mapState('userInfo',['user'])
+      ...mapState('userInfo',['user']),
+      avatar(){
+        return  this.user.userAvatar ==="" ||  this.user.userAvatar === null? require('../../assets/images/normal_avatar.png'):this.user.userAvatar
+      }
     },
     methods:{
       ...mapActions('commonState',['showCart','setToken']),
@@ -61,21 +71,12 @@
         window.localStorage.removeItem('token')
         this.$router.go(0)
       }
-
     },
-    watch:{
-      '$route'(to,from){
-        if (from.name === 'Login'){
-          this.$router.go(0)
-        }
-      }
-    },
-    beforeMount () {
-      //在挂载模板之前，要拿到用户数据
+    created () {
+      //在创建组件之后（挂载模板到页面之前），要拿到用户数据
       /*有token则发送请求 获取信息，没有token则跳转登陆*/
-      console.log("在挂载模板之前，要拿到用户数据")
       let token = window.localStorage.getItem('token')
-      if (token !== undefined || token !== null)
+      if (token !== null)
       {
         Api.getUserInfo().then( response =>{
           console.log(response)
@@ -90,18 +91,15 @@
           if (response.code === 10002)
           {
             this.removeStatus()
-            this.$router.push('/user/login')
+            this.$router.push('/login')
           }
 
         }).catch( error =>{
           console.log(error)
         })
       }
-      else
-        this.$router.push('/user/login')
-    },
-    mounted () {
-      console.log("状态栏组件被加载")
+      /*else
+        this.$router.push('/user/login')*/
     }
   }
 </script>
@@ -206,7 +204,8 @@
         top:-15%;
         border-radius: 50%;
         transform:translateX(-50%);
-        background: #42b983;
+        background: #ffffff;
+        box-shadow: 0px 2px 10px -8px rgba(0,0,0,5);
 
         img{
           width: 100%;
