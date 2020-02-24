@@ -7,6 +7,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/iconfont/iconfont.css'
 import './assets/iconfont/iconfont.js'
+import moment from 'moment'
+
+Vue.prototype.$moment = moment;
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false

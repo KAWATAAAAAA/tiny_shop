@@ -70,6 +70,7 @@
             let data = response.data
 
             window.localStorage.setItem('token',data.token)
+            window.sessionStorage.setItem('userStatus',JSON.stringify(true))
             this.setToken(data) //记录token
             this.setStatus() // 设置用户状态
             this.setUserInfo({data})

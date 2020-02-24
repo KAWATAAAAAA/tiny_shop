@@ -69,6 +69,7 @@
       logout(){
         this.removeStatus()
         window.localStorage.removeItem('token')
+        window.sessionStorage.removeItem('userStatus')
         this.$router.go(0)
       }
     },

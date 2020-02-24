@@ -1,5 +1,6 @@
 # tiny_shop
-
+## 开发设计结构
+![components and router-view](https://imgchr.com/i/38UtI0)
 ## Project setup
 ```
 npm install
@@ -36,7 +37,10 @@ Server version: 8.0.13 MySQL Community Server - GPL
     - 信息编辑
     - 商家入驻
     
+- 店铺主页
+    - 宝贝上架
+    - 宝贝查询（条件组合 + 分页）
+    
 
 # 接下来要完成的工作
-店铺首页
-商品上架
+移步到app 首页，将宝贝搜索做好

@@ -10,3 +10,5 @@ export const GET_USERINFO = 'get_userinfo'
 export const SET_USERINFO = 'set_userinfo'
 
 export const CLEAR_USERINFO = 'clear_userinfo'
+
+export const SET_GOODS_INFO = 'set_goods_info'

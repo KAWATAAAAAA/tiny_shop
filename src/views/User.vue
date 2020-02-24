@@ -142,11 +142,7 @@
 </script>
 
 <style scoped lang="scss">
-  a:-webkit-any-link {
-    color: inherit;
-    cursor: pointer;
-    text-decoration: none;
-  }
+
   *{
     *border:1px solid red;
   }

@@ -7,7 +7,7 @@
       </keep-alive>
     </header>
     <div class="main-body">
-      <keep-alive exclude="User">
+      <keep-alive :exclude="['User','Login','Register','Store']">
         <router-view></router-view>
       </keep-alive>
     </div>
@@ -71,6 +71,11 @@
   }
   input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 30px white inset; // 清除chrom浏览器的表单记忆自动填充的蓝色背景
+  }
+  a:-webkit-any-link {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
   }
 #app {
   font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;

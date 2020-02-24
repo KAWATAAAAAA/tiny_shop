@@ -36,7 +36,7 @@
               <use xlink:href="#ext-icon-shengri" id="ext-icon-shengri"></use>
             </svg>生日
           </span>
-          {{user.userBirthday == "" || user.userBirthday == null?"未知":user.userBirthday}}
+          {{$moment(user.userBirthday == "" || user.userBirthday == null?"未知":user.userBirthday).format("YYYY-MM-DD")}}
         </li>
         <li>
           <span>
@@ -83,7 +83,7 @@
               <use xlink:href="#ext-icon-shengri" id="ext-icon-shengri"></use>
             </svg>生日
           </span>
-          {{otherUser.userBirthday == "" || user.userBirthday == null?"未知":user.userBirthday}}
+          {{$moment(otherUser.userBirthday == "" || user.userBirthday == null?"未知":user.userBirthday).format("YYYY-MM-DD")}}
         </li>
       </ul>
     </div>

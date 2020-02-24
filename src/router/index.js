@@ -8,8 +8,9 @@ import Chat from '../components/Chat'
 import BaseInfo from '../components/User/BaseInfo'
 import InfoEdit from '../components/User/InfoEdit'
 import StoreEdit from '../components/Store/StoreEdit'
+import AddGoods from '../components/Store/AddGoods'
+import MyGoodsList from '../components/Store/MyGoodsList'
 
-import store from '../store'
 Vue.use(VueRouter)
 
 const routes = [
@@ -57,7 +58,22 @@ const routes = [
     path:'/store/:id',
     name:'Store',
     meta: { requiresAuth: true },
-    component:() => import('../views/Store')
+    component:() => import('../views/Store'),
+    children:[
+      {
+        path: '',
+        name: 'MyGoodsList',
+        component: MyGoodsList,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'add-goods',
+        name: 'AddGoods',
+        component: AddGoods,
+        meta: { requiresAuth: true }
+      },
+
+    ]
   },
   {
     path:'/upload',
@@ -86,7 +102,7 @@ export default router
 router.beforeEach((to, from, next) => {
 
   if(to.matched.some(record => record.meta.requiresAuth)){
-    if(store.state["userInfo"].user.status)
+    if(JSON.parse(window.sessionStorage.getItem('userStatus')) || window.localStorage.getItem('token'))
     {
       next()
     }

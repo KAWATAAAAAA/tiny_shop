@@ -24,6 +24,8 @@ axios.interceptors.response.use(
     console.log(response)
     if (response.data.code === 10002 || response.data.code === 10001  || response.data.code === 401){
       alert("未登录，或者已经过期，或签名不匹配，我马上清除用户信息")
+      window.sessionStorage.removeItem('userStatus')
+      window.localStorage.removeItem('token')
       store.dispatch('userInfo/clearUserInfo')
       router.push({
         name:'Login'
