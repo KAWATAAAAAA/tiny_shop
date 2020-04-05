@@ -44,7 +44,7 @@
            <li><i class="iconfont ext-icon-iconset0316" style="color: #fb7299"/>购物袋</li>
            <li><i class="iconfont ext-icon-order" style="color: #00c091"/>订单列表</li>
            <li><i class="iconfont ext-icon-xihuan" style="color: #ff5d47"/>收藏</li>
-           <li></li>
+           <li><router-link :to="{name:'AddressInfo'}"><i class="iconfont ext-icon-shouhuotuihuo" style="color: #FFCC33"/>我的收货地址</router-link></li>
          </ul>
          <ul v-else>
            <li><i class="iconfont ext-icon-Personal" style="color: #02b5da"/>个人信息</li>

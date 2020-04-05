@@ -7,6 +7,20 @@
 ",
   "glyphs": [
     {
+      "icon_id": "1086199",
+      "name": "收货退货 ",
+      "font_class": "shouhuotuihuo",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "882455",
+      "name": "购物袋",
+      "font_class": "gouwudai",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
       "icon_id": "6690006",
       "name": "眼影",
       "font_class": "yanying",

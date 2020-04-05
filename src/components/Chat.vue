@@ -113,6 +113,7 @@
     border-bottom: 1px solid #cccccc;
     background: #ffffff;
   }
+
   .send-container{
     width: 100%;
     height: 20%;

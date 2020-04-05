@@ -1,12 +1,19 @@
 <template>
 
-  <div class="search-container">
+  <div class="search-container" @keypress.13="$router.push({name:'GoodsCascade',query:{goodsName:searchText}})">
     <input id="search" name="search" class="search-input" type="text" placeholder="请输入关键" v-model="searchText" pattern="[A-z]{3}">
-    <button class="btn btn-outline-success my-2 my-sm-0 search-commit" :class="{isDisabled}" :disabled="isDisabled" type="submit" @click="send">Search</button>
+    <button class="btn btn-outline-success my-2 my-sm-0 search-commit"
+            :class="{isDisabled}" :disabled="isDisabled"
+            type="submit"
+            @click="$router.push({name:'GoodsCascade',query:{goodsName:searchText}})">
+      Search
+    </button>
   </div>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+
   export default {
     name: 'Search',
     data(){
@@ -19,15 +26,25 @@
 
     },
     watch:{
-      searchText(newvalue){
-        console.log(newvalue)
-        newvalue == ""?this.isDisabled = true:this.isDisabled = false;
+      searchText(newval){
+        newval == ""?this.isDisabled = true:this.isDisabled = false;
+      },
+      '$route'(to,from){
+        if (to.name !== "GoodsCascade")
+        {
+          this.searchText = ""
+          this.setGoodsInfo([])
+        }
+          this.searchText = to.query.goodsName
       }
+
     },
     methods:{
-      send(){
-        alert("ajax")
-      }
+      ...mapActions('commonState',['setGoodsInfo']),
+      // 判断路由变化
+     /* if(false){
+
+      }*/
     }
   }
 </script>

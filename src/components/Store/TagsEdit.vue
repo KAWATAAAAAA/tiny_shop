@@ -42,6 +42,7 @@
     },
     methods: {
       handleClose(tag) {
+
         this.$emit('removeDynamicTag',tag)
       },
 

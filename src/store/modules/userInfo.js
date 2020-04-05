@@ -1,4 +1,4 @@
-import {SET_STATUS,REMOVE_STATUS,GET_USERINFO,SET_USERINFO,CLEAR_USERINFO} from './mutation-types'
+import * as TYPES from './mutation-types'
 
 const state = {
   user:{
@@ -21,16 +21,16 @@ const getters = {
 
 }
 const mutations = {
-  [SET_STATUS](state){
+  [TYPES.SET_STATUS](state){
     state.user.status = true
   },
-  [REMOVE_STATUS](state){
+  [TYPES.REMOVE_STATUS](state){
     state.user.status = false
   },
-  [GET_USERINFO](state){
+  [TYPES.GET_USERINFO](state){
 
   },
-  [SET_USERINFO](state,{data}){
+  [TYPES.SET_USERINFO](state,{data}){
   /*
   *   state.user.userId = data.userId
     state.user.userBirthday = data.userBirthday
@@ -47,7 +47,7 @@ const mutations = {
       state.user[item] = data[item]
     }
   },
-  [CLEAR_USERINFO](state){
+  [TYPES.CLEAR_USERINFO](state){
     for(let item in state.user)
     {
       if (Array.isArray(state.user[item] ))
@@ -77,19 +77,19 @@ const mutations = {
 
 const actions = {
   setStatus(context){
-    context.commit(SET_STATUS)
+    context.commit(TYPES.SET_STATUS)
   },
   removeStatus(context){
-    context.commit(REMOVE_STATUS)
+    context.commit(TYPES.REMOVE_STATUS)
   },
   getUserInfo(context){
-    context.commit(GET_USERINFO)
+    context.commit(TYPES.GET_USERINFO)
   },
   setUserInfo(context,{data}){
-    context.commit(SET_USERINFO,{data})
+    context.commit(TYPES.SET_USERINFO,{data})
   },
   clearUserInfo(context){
-    context.commit(CLEAR_USERINFO)
+    context.commit(TYPES.CLEAR_USERINFO)
   }
 }
 

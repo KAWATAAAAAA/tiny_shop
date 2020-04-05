@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home'
-import Login from '../components/Login'
+
 import Register from '../components/Register'
 import Upload from '../components/Upload'
 import Chat from '../components/Chat'
@@ -10,7 +10,8 @@ import InfoEdit from '../components/User/InfoEdit'
 import StoreEdit from '../components/Store/StoreEdit'
 import AddGoods from '../components/Store/AddGoods'
 import MyGoodsList from '../components/Store/MyGoodsList'
-
+import AddressEdit from '../components/AddressEdit'
+import AddressInfo from '../components/BuyNowConfirm/AddressInfo'
 Vue.use(VueRouter)
 
 const routes = [
@@ -23,7 +24,7 @@ const routes = [
   {
     path: '/login',
     name:'Login',
-    component:Login
+    component:() => import('../components/Login')
   },
   {
     path: '/register',
@@ -46,6 +47,17 @@ const routes = [
         component: InfoEdit
       },
       {
+        path: 'address-list',
+        name: 'AddressInfo',
+        meta: { requiresAuth:true },
+        component: AddressInfo
+      },
+      {
+        path:'address/edit',
+        name:'AddressEdit',
+        component: AddressEdit
+      },
+      {
         path:'store/edit',
         name:'store-edit',
         meta: { requiresAuth: true },
@@ -56,7 +68,6 @@ const routes = [
   },
   {
     path:'/store/:id',
-    name:'Store',
     meta: { requiresAuth: true },
     component:() => import('../views/Store'),
     children:[
@@ -87,7 +98,16 @@ const routes = [
     meta: { requiresAuth: true },
     component:Chat
   },
-
+  {
+    path:'/goods-cascade',
+    name:'GoodsCascade',
+    component:() => import('../views/GoodsCascade')
+  },
+  {
+    path:'/buy-now-confirm',
+    name:'BuyNowConfirm',
+    component:() => import('../views/BuyNowConfirm')
+  }
 ]
 
 
@@ -118,9 +138,9 @@ router.beforeEach((to, from, next) => {
 })
 
 // 消除路由跳转相同地址的报错
-/*
+
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 };
-*/
+

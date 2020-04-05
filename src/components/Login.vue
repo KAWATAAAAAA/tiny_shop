@@ -32,6 +32,9 @@
         }
       };
     },
+    beforeDestroy () {
+      document.onkeypress = undefined
+    },
     name: 'Login',
     data(){
       return{

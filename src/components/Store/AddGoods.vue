@@ -93,6 +93,7 @@
           goodsNum:"",
           goodsLabel:[],
           storeId:this.$route.params.id,
+          storeName:sessionStorage.getItem('store_name'),
           accept:""
         },
         rules:{
@@ -144,7 +145,8 @@
                 })
                 this.$refs[formName].resetFields() //清除表单信息
                 this.imageUrl = "" //清除图片
-                this.dynamicTags.splice(5)
+                this.dynamicTags.splice(5) // 清除 tags列表
+                this.goodsInfo.goodsLabel.length = 0; //清除已收集的 tags 列表
               }
             }).catch( err =>{
               console.log(err)

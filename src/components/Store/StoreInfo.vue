@@ -65,6 +65,7 @@
         if (res.code === 200)
         {
           this.store = res.data
+          sessionStorage.setItem("store_name",res.data.storeName)
         }
         else
           alert("查询错误")

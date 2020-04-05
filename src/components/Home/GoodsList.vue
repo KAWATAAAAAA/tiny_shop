@@ -1,6 +1,6 @@
 <template>
     <div class="goods-list">
-
+     网站首页用作宣传
     </div>
 </template>
 
@@ -15,5 +15,6 @@
   width:100%;
   height: 900px;
   background: white;
+  border:1px solid red;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="status">
       <img src="../assets/logo.png" @click="toHome" alt="logo">
-      <Search />
+      <Search v-show="$route.name !== 'GoodsCascade'"/>
       <keep-alive>
         <UserStatusBar/>
       </keep-alive>

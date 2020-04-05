@@ -38,14 +38,14 @@
         <i class="iconfont ext-icon-xiaoxi1" />
       </li>
       <li class="shopping-cart" @click="showCart">
-        购物袋
+        购物袋<span class="g-total" v-show="totalItem > 0">{{totalItem}}</span>
         <i class="iconfont ext-icon-iconset0316" />
       </li>
     </ul>
 </template>
 
 <script>
-  import {mapActions,mapState} from 'vuex'
+  import {mapActions,mapState,mapGetters} from 'vuex'
   import Api from '../../api'
   export default {
     name: 'UserStatusBar',
@@ -55,6 +55,7 @@
       }
     },
     computed:{
+      ...mapGetters('cartState',['totalItem']),
       ...mapState('userInfo',['user']),
       avatar(){
         return  this.user.userAvatar ==="" ||  this.user.userAvatar === null? require('../../assets/images/normal_avatar.png'):this.user.userAvatar
@@ -139,6 +140,22 @@
       margin-left: .5rem;
     }
   }
+  .shopping-cart{
+    position: relative;
+    .g-total{
+      color: #ffffff;
+      border-radius: 50%;
+      font-size: .5rem;
+      width: 18px;
+      height: 18px;
+      text-align: center;
+      line-height: 18px;
+      background: #F40;
+      position: absolute;
+      right: 5%;
+      top: 10%;
+    }
+  }
 }
 .user-info{
   width: 150px;
@@ -185,6 +202,7 @@
         color: #42b983;
       }
     }
+
     .user-status{
       display: flex;
       height: 55%;

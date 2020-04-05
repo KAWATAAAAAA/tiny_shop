@@ -1,6 +1,6 @@
 <template>
   <div class="filter-wrapper">
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" >
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
       <el-menu-item index="1" @click="searchBySales">销量从高到低</el-menu-item>
       <el-submenu index="2">
         <template slot="title">价格</template>
@@ -20,8 +20,8 @@
         筛选
       </el-menu-item>
       <el-menu-item index="5" class="search-inner">
-        <el-input placeholder="请输入内容" v-model="goodsName" class="input-with-select" size="small">
-          <el-button slot="append" icon="el-icon-search" @click="searchByName"></el-button>
+        <el-input placeholder="请输入内容" v-model="goodsName" @keydown.enter.native="searchByName" class="input-with-search" size="small">
+          <el-button slot="append" icon="el-icon-search"  @click="searchByName"></el-button>
         </el-input>
       </el-menu-item>
     </el-menu>
@@ -50,6 +50,10 @@
       pageSize:{
         type:Number,
         required:true
+      },
+      searchText:{
+        type:String,
+        required: false
       }
     },
     data(){
@@ -84,15 +88,17 @@
         this.goodsName = ""
       }
     },
+    mounted () {
+      if (this.searchText !== undefined)
+        this.goodsName = this.searchText
+    },
     methods:{
       ...mapActions('commonState',['setGoodsInfo']),
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
+
       searchBySales(){
 
         let data = {
-          storeId:this.$route.params.id,
+          storeId:this.$route.params.id === undefined ?"":this.$route.params.id,
           sort:"sale",
           minPrice:0,
           maxPrice:0,
@@ -101,7 +107,7 @@
           goodsName:this.goodsName,
           goodsLabel:this.goodsLabel
         }
-        Api.getMyGoodsList(data).then(res=>{
+        Api.getGoodsList(data).then(res=>{
           console.log(res)
           if (res.code === 200)
           {
@@ -117,7 +123,7 @@
       },
       filterByPriceAsc(){
         let data = {
-          storeId:this.$route.params.id,
+          storeId:this.$route.params.id === undefined ?"":this.$route.params.id,
           sort:"price-Asc",
           minPrice:0,
           maxPrice:0,
@@ -126,7 +132,7 @@
           goodsName:this.goodsName,
           goodsLabel:this.goodsLabel
         }
-        Api.getMyGoodsList(data).then(res=>{
+        Api.getGoodsList(data).then(res=>{
           console.log(res)
           if (res.code === 200)
           {
@@ -142,7 +148,7 @@
       },
       filterByPriceDesc(){
         let data = {
-          storeId:this.$route.params.id,
+          storeId:this.$route.params.id === undefined ?"":this.$route.params.id,
           sort:"price-Desc",
           minPrice:0,
           maxPrice:0,
@@ -151,7 +157,7 @@
           goodsName:this.goodsName,
           goodsLabel:this.goodsLabel
         }
-        Api.getMyGoodsList(data).then(res=>{
+        Api.getGoodsList(data).then(res=>{
           console.log(res)
           if (res.code === 200)
           {
@@ -168,7 +174,7 @@
       filterByPriceRange(){
 
         let data = {
-          storeId:this.$route.params.id,
+          storeId:this.$route.params.id === undefined ?"":this.$route.params.id,
           sort:"none",
           minPrice:this.minPrice === ""?0:this.minPrice,
           maxPrice:this.maxPrice === ""?0:this.maxPrice,
@@ -177,7 +183,7 @@
           goodsName:this.goodsName,
           goodsLabel:this.goodsLabel
         }
-        Api.getMyGoodsList(data).then(res=>{
+        Api.getGoodsList(data).then(res=>{
           console.log(res)
           if (res.code === 200)
           {
@@ -194,7 +200,7 @@
       },
       searchByName(){
         let data = {
-          storeId:this.$route.params.id,
+          storeId:this.$route.params.id === undefined ?"":this.$route.params.id,
           sort:"none",
           minPrice:this.minPrice === ""?0:this.minPrice,
           maxPrice:this.maxPrice === ""?0:this.maxPrice,
@@ -202,7 +208,7 @@
           size:this.pageSize,
           goodsName:this.goodsName
         }
-        Api.getMyGoodsList(data).then(res=>{
+        Api.getGoodsList(data).then(res=>{
           console.log(res)
           if (res.code === 200)
           {
@@ -237,7 +243,7 @@
           size:this.pageSize
         }
         if(tag.effect === "dark"){
-          Api.getMyGoodsList(data).then(res =>{
+          Api.getGoodsList(data).then(res =>{
             console.log(res)
             if (res.code === 200)
             {
@@ -339,5 +345,45 @@
         }
       }
     }
+    ul > li{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: space-between;
+      .el-input-group{
+        width: auto;
+
+      }
+    }
+    .el-menu--horizontal>.el-menu-item.is-active {
+      border-bottom: none !important;
+      color: #333333;
+      font-weight: bold;
+    }
+    .el-menu--horizontal>.el-menu-item {
+      border-bottom: none !important;
+    }
+  }
+</style>
+<style lang="scss">
+  .filter-wrapper > ul > li {
+    .input-with-search{
+      //输入框
+      .el-input__inner{
+        min-width: 20rem;
+      }
+      //按钮
+      .el-input-group__append{
+        padding: 0 .5rem 0 1rem;
+        background: #4fb4fb;
+        border: 1px solid #4fb4fb;
+        .el-icon-search{
+          color: #ffffff;
+        }
+      }
+
+    }
+
   }
 </style>

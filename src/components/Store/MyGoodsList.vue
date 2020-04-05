@@ -91,7 +91,7 @@
         currentPage:1,
         size:this.pageSize
       }
-      Api.getMyGoodsList(data).then(res=>{
+      Api.getGoodsList(data).then(res=>{
         if (res.code === 200)
         {
           console.log(res)
@@ -129,7 +129,7 @@
         }
 
 
-        Api.getMyGoodsList(data).then(res=>{
+        Api.getGoodsList(data).then(res=>{
           console.log(res)
           if (res.code === 200)
           {
@@ -256,24 +256,7 @@
 </style>
 <style lang="scss">
   .goods-list-container{
-    .filter-wrapper{
-      ul > li{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .el-menu--horizontal>.el-menu-item.is-active {
-        border-bottom: none !important;
-        color: #333333;
-        font-weight: bold;
-      }
-      .el-menu--horizontal>.el-menu-item {
-        border-bottom: none !important;
-      }
 
-    }
   }
   .price-order{
 

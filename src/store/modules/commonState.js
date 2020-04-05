@@ -1,4 +1,4 @@
-import {SET_TOKEN,SET_GOODS_INFO} from './mutation-types'
+import * as TYPES from './mutation-types'
 
 const state = {
   isCartOpen:false,
@@ -9,11 +9,17 @@ const getters = {
 
 }
 const mutations = {
-  [SET_TOKEN](state,token){
+  [TYPES.SET_TOKEN](state,token){
     state.token = token
   },
-  [SET_GOODS_INFO](state,data){
+  [TYPES.SET_GOODS_INFO](state,data){
     state.goodsInfo = data
+  },
+  [TYPES.PUSH_GOODS_INFO](state,data){
+    /*分页中 下一页是一个list 所以data是数组类型*/
+    data.forEach((item)=>{
+      state.goodsInfo.push(item)
+    })
   },
   setIsCartOpen(state){
     state.isCartOpen = !(state.isCartOpen)
@@ -23,10 +29,13 @@ const mutations = {
 const actions = {
   setToken(context,token){
 
-    context.commit(SET_TOKEN,token)
+    context.commit(TYPES.SET_TOKEN,token)
   },
   setGoodsInfo(context,data){
-    context.commit(SET_GOODS_INFO,data)
+    context.commit(TYPES.SET_GOODS_INFO,data)
+  },
+  pushGoodsInfo(context,data){
+    context.commit(TYPES.PUSH_GOODS_INFO,data)
   },
   showCart(context){
     context.commit('setIsCartOpen')

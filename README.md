@@ -41,6 +41,8 @@ Server version: 8.0.13 MySQL Community Server - GPL
     - 宝贝上架
     - 宝贝查询（条件组合 + 分页）
     
-
+# 本次解决问题
+解决了上架宝贝时 tags 动态增减的bug
 # 接下来要完成的工作
 移步到app 首页，将宝贝搜索做好
+
