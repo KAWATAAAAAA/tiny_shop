@@ -68,30 +68,36 @@
     name: 'ShoppingCart',
     data(){
       return{
-        isSelectAll:false
+        isSelectAll:false,
+
+        isUserLive:{}  // false 离线, true在线
+      }
+    },
+    watch:{
+      'isUserLive.status'(newvalue){
+        if (newvalue === true)
+        {
+          console.log("发生了改变",newvalue)
+          this.setCartState()
+        }
+
       }
     },
     mounted () {
       console.log("购物车组件加载完毕")
-      let data = {
-        userId:this.user.userId
-      }
-      console.log(data)
-      Api.getShoppingCartGoodsList(data).then((res)=>{
-        console.log(res)
-        if (res.code === 200)
-        {
-          this.setCartState(res.data)
-        }
-      }).catch((err)=>{
-        console.log(err)
-      })
+      /*
+      * 将内容转至 vue actions
+      * */
+      this.isUserLive = this.getUserInfo
+      //this.setCartState()
     },
+
     computed:{
       ...mapState('commonState',['isCartOpen']),
       ...mapState('userInfo',['user']),
       ...mapState('cartState',['storeInfo','totalPrice']),
       ...mapGetters('cartState',['totalPriceGetter']),
+      ...mapGetters('userInfo',['getUserInfo']),
 
     },
     methods:{

@@ -7,6 +7,20 @@
 ",
   "glyphs": [
     {
+      "icon_id": "554425",
+      "name": "定位",
+      "font_class": "iconset0392",
+      "unicode": "e70f",
+      "unicode_decimal": 59151
+    },
+    {
+      "icon_id": "10651917",
+      "name": "定位",
+      "font_class": "dingwei-",
+      "unicode": "e64d",
+      "unicode_decimal": 58957
+    },
+    {
       "icon_id": "1086199",
       "name": "收货退货 ",
       "font_class": "shouhuotuihuo",

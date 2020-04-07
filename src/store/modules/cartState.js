@@ -63,15 +63,15 @@ const mutations = {
       for (let index_s in storeArr)
       {
         if (list[index_d].storeId === storeArr[index_s].storeId && !(storeArr[index_s].goodsInfo.includes(item))){
-          console.log(storeArr[index_s].goodsInfo.includes(item))
-          console.log("商店相同，并且goodsInfo中不存在即将push的数据")
+          //console.log(storeArr[index_s].goodsInfo.includes(item))
+          //console.log("商店相同，并且goodsInfo中不存在即将push的数据")
 
           storeArr[index_s].goodsInfo.push({
             ...list[index_d]
           })
 
         }else if (list[index_d].storeId !== storeArr[index_s].storeId){
-          console.log("商店不相同")
+          //console.log("商店不相同")
           item = {
             storeId:list[index_d].storeId,
             storeName:list[index_d].storeName,
@@ -82,7 +82,7 @@ const mutations = {
         }
       }
     }
-    console.log(storeArr)
+
   },
   [TYPES.ADD_TO_CART_STATE](state,data){
     let deepCopy = JSON.parse(JSON.stringify(data))
@@ -264,9 +264,25 @@ const actions = {
     // v-model 已自动设置商店状态，现在只需设定 商品状态
     commit(TYPES.SET_GOODS_CHECKED,data)
   },
-  setCartState(context,data){
-    console.log(data)
-    context.commit(TYPES.SET_CART_STATE,data)
+  setCartState(context){
+    return new Promise((resolve, reject) => {
+      let data = {
+        userId:context.rootState.userInfo.user.userId
+      }
+      Api.getShoppingCartGoodsList(data).then((res)=>{
+        console.log(res)
+        if (res.code === 200)
+        {
+          context.commit(TYPES.SET_CART_STATE,res.data)
+          resolve(res)
+        }
+      }).catch((err)=>{
+        reject(err)
+      })
+    })
+
+
+
 
   }
 }

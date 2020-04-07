@@ -1,4 +1,5 @@
 import * as TYPES from './mutation-types'
+import Api from '../../api'
 
 const state = {
   user:{
@@ -18,7 +19,9 @@ const state = {
   }
 }
 const getters = {
-
+  getUserInfo(state){
+    return state.user
+  }
 }
 const mutations = {
   [TYPES.SET_STATUS](state){
@@ -30,7 +33,7 @@ const mutations = {
   [TYPES.GET_USERINFO](state){
 
   },
-  [TYPES.SET_USERINFO](state,{data}){
+  [TYPES.SET_USERINFO](state,data){
   /*
   *   state.user.userId = data.userId
     state.user.userBirthday = data.userBirthday
@@ -85,8 +88,20 @@ const actions = {
   getUserInfo(context){
     context.commit(TYPES.GET_USERINFO)
   },
-  setUserInfo(context,{data}){
-    context.commit(TYPES.SET_USERINFO,{data})
+  setUserInfo(context){
+    return new Promise((resolve, reject) => {
+      Api.getUserInfo().then(res=>{
+        if (res && res.code === 200)
+        {
+          context.commit(TYPES.SET_USERINFO,res.data)
+          resolve(res)
+        }
+      }).catch(err=>{
+        reject(err)
+      })
+    })
+
+
   },
   clearUserInfo(context){
     context.commit(TYPES.CLEAR_USERINFO)

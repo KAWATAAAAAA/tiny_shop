@@ -80,28 +80,36 @@
       let token = window.localStorage.getItem('token')
       if (token !== null)
       {
-        Api.getUserInfo().then( response =>{
-          console.log(response)
-          if (response.code === 200)
-          {
-            this.setStatus()
-            this.setToken(token)
-            let data = response.data
-            this.setUserInfo({data})
-          }
+        /*
+        * 将内容转至 vuex 的 actions
+        * */
+       this.setUserInfo().then(res=>{
+         this.setStatus()
+         this.setToken(token)
+       }).catch(err=>{
+         console.log(err)
+       })
 
-          if (response.code === 10002)
-          {
-            this.removeStatus()
-            this.$router.push('/login')
-          }
+        /*
+        let res = await Api.getUserInfo()
+        if(res && res.code === 200)
+        {
+          let data = res.data
+          this.setUserInfo({data})
+          this.setStatus()
+          this.setToken(token)
 
-        }).catch( error =>{
-          console.log(error)
-        })
+
+        }
+        if (res && res.code === 10002)
+        {
+          this.removeStatus()
+          this.$router.push('/login')
+        }
+        */
+
       }
-      /*else
-        this.$router.push('/user/login')*/
+
     }
   }
 </script>

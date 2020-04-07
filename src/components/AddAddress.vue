@@ -1,6 +1,5 @@
 <template>
   <div class="address-edit-wrapper">
-    地址编辑
     <el-form ref="ruleForm" :model="ruleForm" label-width="6rem" class="form-area">
       <el-form-item label="收货人" prop="userRealName">
         <el-input v-model="ruleForm.userRealName"></el-input>
@@ -40,7 +39,7 @@
   import {mapState} from 'vuex'
   import Api from '../api'
   export default {
-    name: 'AddressEdit',
+    name: 'AddAddress',
     data(){
       return {
         ruleForm:{
@@ -56,21 +55,6 @@
     computed:{
       ...mapState('userInfo',['user'])
     },
-    mounted () {
-      let data = {
-        addressId:this.$route.params.id
-      }
-      console.log(data)
-      Api.getAddressItem(data).then(res=>{
-        console.log(res)
-        if (res && res.code === 200){
-          this.ruleForm = res.data
-        }
-
-      }).catch(err=>{
-        console.log(err)
-      })
-    },
     methods:{
       handleChange(value){
         let text = ""
@@ -83,7 +67,7 @@
       async submitForm(formName){
         let data = _.cloneDeep(this.ruleForm)
         data.userId = this.user.userId
-        let res = await Api.updateAddressItem(data)
+        let res = await Api.addAddressItem(data)
         if(res && res.code === 200)
         {
           console.log(res)

@@ -1,19 +1,19 @@
 <template>
   <div class="buy-now-confirm-wrapper">
     <StatusConfirm />
-    <AddressEdit>
+    <AddressInfo>
       <template v-slot:header>
         <el-divider content-position="left">确认收货地址</el-divider>
 
       </template>
-    </AddressEdit>
+    </AddressInfo>
     <OrderInfoConfirm />
   </div>
 </template>
 
 <script>
   import StatusConfirm from '../components/BuyNowConfirm/StatusConfirm'
-  import AddressEdit from '../components/BuyNowConfirm/AddressInfo'
+  import AddressInfo from '../components/BuyNowConfirm/AddressInfo-back'
   import OrderInfoConfirm from '../components/BuyNowConfirm/OrderInfoConfirm'
   export default {
     name: 'BuyNowConfirm',
@@ -22,7 +22,7 @@
     },
     components:{
       OrderInfoConfirm,
-      AddressEdit,
+      AddressInfo,
       StatusConfirm
     }
   }

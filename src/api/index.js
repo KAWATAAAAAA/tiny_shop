@@ -24,19 +24,22 @@ const Api = {
   getStoreInfo: (id) => ajax('/store/store-info', "GET", id),
 
   /*商户：商品上架*/
-  setGoodsInfo:(data) => ajax('/goods/goods-info','PUT',data),
+  setGoodsInfo: (data) => ajax('/goods/goods-info', 'PUT', data),
   /*商户：获取商品列表*/
-  getGoodsList:(data) => ajax('/goods/goods-list','GET',data),
+  getGoodsList: (data) => ajax('/goods/goods-list', 'GET', data),
 
   /*角色公用：购物车组件*/
-  getShoppingCartGoodsList:(data) => ajax('/shopping-cart/goods-list','GET',data),
-  addShoppingCartGoodsItem:(data) => ajax('/shopping-cart/goods-item','POST',data),
-  updateShoppingCartGoodsInfo:(data) => ajax('/shopping-cart/goods-item','PATCH',data),
+  getShoppingCartGoodsList: (data) => ajax('/shopping-cart/goods-list', 'GET', data),
+  addShoppingCartGoodsItem: (data) => ajax('/shopping-cart/goods-item', 'POST', data),
+  updateShoppingCartGoodsInfo: (data) => ajax('/shopping-cart/goods-item', 'PATCH', data),
 
   /*角色公用：地址操作*/
-  addAddressItem:(data)=> ajax('/address/address-item','PUT',data),
-  getAddressList:()=> ajax('/address/address-list','GET'),
+  addAddressItem: (data) => ajax('/address/address-item', 'POST', data),
+  getAddressList: () => ajax('/address/address-list', 'GET'),
+  getAddressItem: (data) => ajax('/address/address-item', 'GET', data),
+  updateAddressItem: (data) => ajax('/address/address-item', 'PATCH', data)
 }
+
 
 
 

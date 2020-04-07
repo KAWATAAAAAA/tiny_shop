@@ -30,7 +30,7 @@
     name:'App',
     components:{
       Header,
-      ShoppingCart:()=> import('./components/ShoppingCart')
+      ShoppingCart:()=> import('./components/ShoppingCart') // 没配合 v-if使用 这条懒加载是无效的，但是用了v-if又会有其它问题
     },
     computed:{
       ...mapState('commonState',['isCartOpen'])

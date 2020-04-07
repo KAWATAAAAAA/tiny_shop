@@ -10,8 +10,9 @@ import InfoEdit from '../components/User/InfoEdit'
 import StoreEdit from '../components/Store/StoreEdit'
 import AddGoods from '../components/Store/AddGoods'
 import MyGoodsList from '../components/Store/MyGoodsList'
-import AddressEdit from '../components/AddressEdit'
+import AddAddress from '../components/AddAddress'
 import AddressInfo from '../components/BuyNowConfirm/AddressInfo'
+import AddressEdit from '../components/AddressEdit'
 Vue.use(VueRouter)
 
 const routes = [
@@ -53,8 +54,13 @@ const routes = [
         component: AddressInfo
       },
       {
-        path:'address/edit',
-        name:'AddressEdit',
+        path:'address/add',
+        name:'AddAddress',
+        component: AddAddress
+      },
+      {
+        path: 'address/edit/:id',
+        name: 'AddressEdit',
         component: AddressEdit
       },
       {
