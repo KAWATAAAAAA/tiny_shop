@@ -1,6 +1,6 @@
 import * as TYPES from './mutation-types'
 import Api from '../../api'
-
+import LS from '../../static/js/LogStyle'
 const state = {
   user:{
     status:false,
@@ -25,6 +25,7 @@ const getters = {
 }
 const mutations = {
   [TYPES.SET_STATUS](state){
+    console.log("%c 设置状态被调用",LS.lightRed)
     state.user.status = true
   },
   [TYPES.REMOVE_STATUS](state){
@@ -89,11 +90,14 @@ const actions = {
     context.commit(TYPES.GET_USERINFO)
   },
   setUserInfo(context){
+    console.log("1 请求用户数据")
     return new Promise((resolve, reject) => {
       Api.getUserInfo().then(res=>{
         if (res && res.code === 200)
         {
+          console.log("2 用户数据来了")
           context.commit(TYPES.SET_USERINFO,res.data)
+          context.commit(TYPES.SET_STATUS)
           resolve(res)
         }
       }).catch(err=>{

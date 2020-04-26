@@ -1,19 +1,17 @@
 <template>
   <div id="app">
     <div class="reference"></div>
-    <header v-show="$route.name !== 'Login'&& $route.name !== 'Register'">
+    <header v-show="$route.name !== 'Login'&& $route.name !== 'Register' && $route.name !== 'BuyNowConfirm'">
       <keep-alive>
-        <Header />
+        <Header/>
       </keep-alive>
     </header>
     <div class="main-body">
-      <keep-alive :exclude="['User','Login','Register','Store','GoodsCascade']">
+      <keep-alive :exclude="['User','Login','Register','Store','GoodsCascade','BuyNowConfirm']">
         <router-view></router-view>
       </keep-alive>
     </div>
-    <footer>
 
-    </footer>
     <transition name="bounce"
                 enter-class="bounce-in-enter"
                 enter-active-class="bounce-in-active"
@@ -113,11 +111,11 @@
   flex-wrap: wrap;
 
   .bounce-in-active,.bounce-out-active{
-    transform: translateY(50%);
+    transform: translateX(50%);
 
   }
   .bounce-in-enter,.bounce-out-enter{
-    transform: translate3d(100%,50%,0);
+    transform: translate3d(100%,0,0);
     opacity: 0;
   }
   header{

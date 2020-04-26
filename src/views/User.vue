@@ -2,11 +2,11 @@
     <div class="person-container">
      <div class="header">
        <div class="h-user">
-         <div class="h-avatar" v-if="$route.params.id == user.userId" @click="$router.push({path:'/upload'})"><img :src="avatar" /></div>
+         <div class="h-avatar" v-if="$route.params.userId == user.userId" @click="$router.push({path:'/upload'})"><img :src="avatar" /></div>
          <div class="h-avatar-o"  v-else><img :src="avatar"></div>
 
          <div class="h-baseInfo">
-           <div class="u-ctrl" v-if="$route.params.id == user.userId">
+           <div class="u-ctrl" v-if="$route.params.userId == user.userId">
              <h3 class="u-name">{{user.userNickName}}</h3>
              <span class="u-intro">{{user.userIntro == "" ||user.userIntro == null?"这家伙很懒，什么都没留下":user.userIntro}}</span>
            </div>
@@ -15,7 +15,7 @@
              <span class="u-intro">{{otherUser.userIntro == "" ||otherUser.userIntro == null?"这家伙很懒，什么都没留下":otherUser.userIntro}}</span>
            </div>
          </div>
-         <div class="ext-info" v-if="$route.params.id == user.userId">
+         <div class="ext-info" v-if="$route.params.userId == user.userId">
            <el-dropdown trigger="click" :class="{'menu-wrapper':true}" :hide-on-click="true" placement="bottom">
               <span class="el-dropdown-link">
                 更多信息<i class="el-icon-arrow-down el-icon--right"></i>
@@ -39,10 +39,10 @@
          </div>
        </div>
        <div class="h-footer">
-         <ul v-if="$route.params.id == user.userId">
+         <ul v-if="$route.params.userId == user.userId">
            <li><router-link :to="{name:'BaseInfo'}"><i class="iconfont ext-icon-Personal" style="color: #02b5da"/>个人信息</router-link></li>
-           <li><i class="iconfont ext-icon-iconset0316" style="color: #fb7299"/>购物袋</li>
-           <li><i class="iconfont ext-icon-order" style="color: #00c091"/>订单列表</li>
+           <li @click="showCart"><i class="iconfont ext-icon-iconset0316" style="color: #fb7299"/>购物袋</li>
+           <li><i class="iconfont ext-icon-order" style="color: #00c091"/><router-link :to="{name:'OrderHistory'}">订单列表</router-link></li>
            <li><i class="iconfont ext-icon-xihuan" style="color: #ff5d47"/>收藏</li>
            <li><router-link :to="{name:'AddressInfo'}"><i class="iconfont ext-icon-shouhuotuihuo" style="color: #FFCC33"/>我的收货地址</router-link></li>
          </ul>
@@ -80,7 +80,7 @@
     computed:{
       ...mapState('userInfo',['user']),
       avatar(){
-        if (this.$route.params.id == this.user.userId)
+        if (this.$route.params.userId == this.user.userId)
           return  this.user.userAvatar ==="" ||  this.user.userAvatar === null? require('../assets/images/normal_avatar.png'):this.user.userAvatar
         else
           return this.otherUser.userAvatar ==="" ||  this.otherUser.userAvatar === null? require('../assets/images/normal_avatar.png'):this.otherUser.userAvatar
@@ -90,7 +90,7 @@
       '$route' (to, from) {
         // 对路由变化作出响应...
         console.log(to)
-        if (to.params.id === this.user.userId){
+        if (to.params.userId === this.user.userId){
           alert("是同一个用户")
         }
       }
@@ -101,16 +101,17 @@
       next()
     },
     methods:{
+      ...mapActions('commonState',['showCart']),
       ...mapActions('userInfo',['setUserInfo'])
     },
     created () {
-      console.log("user 组件被创建")
+     /* console.log("user 组件被创建")
       console.log(this.user.userId)
       console.log(this.$route.params.id)
-      console.log(this.$route.params.id == this.user.userId)
-      if (this.$route.params.id != this.user.userId){ // 查询的是其他用户的信息，带上id
+      console.log(this.$route.params.id == this.user.userId)*/
+      if (this.$route.params.userId != this.user.userId){ // 查询的是其他用户的信息，带上id
         let data = {
-          id:this.$route.params.id
+          id:this.$route.params.userId
         }
         Api.getUserInfo(data).then( res => {
           console.log(res)

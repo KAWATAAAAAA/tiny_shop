@@ -3,10 +3,10 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home'
 
 import Register from '../components/Register'
-import Upload from '../components/Upload'
-import Chat from '../components/Chat'
+
 import BaseInfo from '../components/User/BaseInfo'
 import InfoEdit from '../components/User/InfoEdit'
+import OrderHistory from '../components/User/OrderHistory'
 import StoreEdit from '../components/Store/StoreEdit'
 import AddGoods from '../components/Store/AddGoods'
 import MyGoodsList from '../components/Store/MyGoodsList'
@@ -33,8 +33,8 @@ const routes = [
     component:Register
   },
   {
-    path:'/user/:id',
-    component:() => import ('../views/User'),
+    path:'/user/:userId',
+    component:() => import (/*webpackChunkName : "group-user"*/ '../views/User'),
     children:[
       {
         path:'',
@@ -68,14 +68,20 @@ const routes = [
         name:'store-edit',
         meta: { requiresAuth: true },
         component:StoreEdit
+      },
+      {
+        path: 'order-history',
+        name: 'OrderHistory',
+        meta: { requiresAuth: true },
+        component: OrderHistory
       }
     ]
 
   },
   {
-    path:'/store/:id',
+    path:'/store/:storeId',
     meta: { requiresAuth: true },
-    component:() => import('../views/Store'),
+    component:() => import(/*webpackChunkName : "group-store"*/ '../views/Store'),
     children:[
       {
         path: '',
@@ -96,13 +102,13 @@ const routes = [
     path:'/upload',
     name:'Upload',
     meta: { requiresAuth: true },
-    component:Upload
+    component:() => import('../components/Upload')
   },
   {
     path:'/chat',
     name:'Chat',
     meta: { requiresAuth: true },
-    component:Chat
+    component:() => import('../components/Chat')
   },
   {
     path:'/goods-cascade',
@@ -113,6 +119,16 @@ const routes = [
     path:'/buy-now-confirm',
     name:'BuyNowConfirm',
     component:() => import('../views/BuyNowConfirm')
+  },
+  {
+    path:'/alipay/payment-completed',
+    name:'PaymentCompleted',
+    component:() => import('../views/PaymentCompleted')
+  },
+  {
+    path:'/alipay/async-notify',
+    name:'AsyncNotify',
+    component:() => import('../views/NotifyUrl')
   }
 ]
 

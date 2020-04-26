@@ -20,6 +20,15 @@
       Carousel,
       GoodsList,
       HotGoods
+    },
+    beforeRouteEnter(to,from,next){
+      if(from.name === 'Login'){
+        next(vm => {
+          vm.$router.go(0)
+        })
+      }else{
+        next()
+      }
     }
   }
 </script>

@@ -18,7 +18,7 @@
             <i class="el-icon-s-comment" />
             我的评价
           </li>
-          <li>
+          <li @click="toOrderHistory">
             <i class="el-icon-s-order" />
             历史订单
           </li>
@@ -38,7 +38,7 @@
         <i class="iconfont ext-icon-xiaoxi1" />
       </li>
       <li class="shopping-cart" @click="showCart">
-        购物袋<span class="g-total" v-show="totalItem > 0">{{totalItem}}</span>
+        购物袋<span class="g-total" v-show="totalItemGetter > 0">{{totalItemGetter}}</span>
         <i class="iconfont ext-icon-iconset0316" />
       </li>
     </ul>
@@ -55,7 +55,7 @@
       }
     },
     computed:{
-      ...mapGetters('cartState',['totalItem']),
+      ...mapGetters('cartState',['totalItemGetter']),
       ...mapState('userInfo',['user']),
       avatar(){
         return  this.user.userAvatar ==="" ||  this.user.userAvatar === null? require('../../assets/images/normal_avatar.png'):this.user.userAvatar
@@ -63,9 +63,12 @@
     },
     methods:{
       ...mapActions('commonState',['showCart','setToken']),
-      ...mapActions('userInfo',['setStatus','removeStatus','setUserInfo']),
+      ...mapActions('userInfo',['removeStatus','setUserInfo']),
       show(){
         this.isShow = !this.isShow
+      },
+      toOrderHistory(){
+        this.$router.push(`/user/${this.user.userId}/order-history`)
       },
       logout(){
         this.removeStatus()
@@ -84,29 +87,11 @@
         * 将内容转至 vuex 的 actions
         * */
        this.setUserInfo().then(res=>{
-         this.setStatus()
+
          this.setToken(token)
        }).catch(err=>{
          console.log(err)
        })
-
-        /*
-        let res = await Api.getUserInfo()
-        if(res && res.code === 200)
-        {
-          let data = res.data
-          this.setUserInfo({data})
-          this.setStatus()
-          this.setToken(token)
-
-
-        }
-        if (res && res.code === 10002)
-        {
-          this.removeStatus()
-          this.$router.push('/login')
-        }
-        */
 
       }
 

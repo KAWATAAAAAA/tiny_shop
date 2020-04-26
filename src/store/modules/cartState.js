@@ -1,15 +1,15 @@
 import * as TYPES from './mutation-types'
 import Api from '../../api'
-import { INCRE_GOODS_NUM } from './mutation-types'
+import {Message} from 'element-ui'
 
 const state = {
   storeInfo:[
-   /* {
+    {
       storeId:'',
       storeName:'',
-      checked:false
+      checked:false,
       goodsInfo:[]
-    }*/
+    }
   ]
 }
 const getters = {
@@ -23,62 +23,88 @@ const getters = {
     })
     return price
   },
-  totalItem(state){
+  totalItemGetter(state){
     let length = 0
     state.storeInfo.forEach((store)=>{
       length += store.goodsInfo.length
     })
 
     return length
+  },
+  beCheckedArrGetter(state){
+    let storeArr = state.storeInfo
+    let beCheckedArr = []
+
+
+    for(const store of storeArr){
+      let goodsArr = store.goodsInfo
+      let filterArr = goodsArr.filter((item)=> item.checked === true)
+      beCheckedArr.push(...filterArr)
+      /*
+      * beCheckedArr = beCheckedArr.concat(filterArr) //返回一个新的数组，并不改变原有数组，所以要赋值一次
+      * */
+    }
+
+    return beCheckedArr
   }
 }
 const mutations = {
+  stateInit(state){
+    state.storeInfo = []
+  },
   [TYPES.SET_CART_STATE](state,list){
+    //指向本地vuex数据
     let storeArr = state.storeInfo
-    for (let index_d in list)
-    {
+    // 指向API数据
+    for (const goods of list){
       /*
       * 当商店列表无数据时
-      * storeArr 新增一个对象
-      * 该新增对象下goodsInfo[] 新增一条商品信息
+      * storeArr 下新增一个对象
+      * 该对象下 goodsInfo[] 新增一条商品信息
       * */
-      let item ;
-      if (storeArr.length === 0 ) {
-        item = { ...list[index_d] }
+      let item
+      if (storeArr.length === 0 )
+      {
+        item = {...goods}
+        item.checked = false
         storeArr.push({
-          storeId: list[index_d].storeId,
-          storeName: list[index_d].storeName,
-          checked: false,
-          goodsInfo: [item]
+          storeId:goods.storeId,
+          storeName:goods.storeName,
+          checked:false,
+          goodsInfo:[item]
         })
-
       }
-
       /*
       * 当商店列表有数据时
       * 先判断是不是属于该商店
       * （属于则直接往商店下 goodsInfo[] push 一条信息）
       * （不属于则 往商店下 push 一个新对象，再对该新对象下的 goodsInfo[] push 一条新信息）
       * */
-      for (let index_s in storeArr)
-      {
-        if (list[index_d].storeId === storeArr[index_s].storeId && !(storeArr[index_s].goodsInfo.includes(item))){
-          //console.log(storeArr[index_s].goodsInfo.includes(item))
-          //console.log("商店相同，并且goodsInfo中不存在即将push的数据")
 
-          storeArr[index_s].goodsInfo.push({
-            ...list[index_d]
+      for(const store of storeArr){
+
+        if (goods.storeId === store.storeId && !(store.goodsInfo.includes(item))){
+          //商店相同，并且goodsInfo中不存在即将push的数据
+
+          goods.checked = false
+          store.goodsInfo.push({
+            ...goods
           })
-
-        }else if (list[index_d].storeId !== storeArr[index_s].storeId){
-          //console.log("商店不相同")
+          break
+        }else if(goods.storeId !== store.storeId){
+          // 商店不同,直接push
+          goods.checked = false
           item = {
-            storeId:list[index_d].storeId,
-            storeName:list[index_d].storeName,
+            storeId:goods.storeId,
+            storeName:goods.storeName,
             checked:false,
-            goodsInfo:[{...list[index_d]}]
+            goodsInfo:[{...goods}]
           }
           storeArr.push(item)
+          break
+        }
+        else {
+          break
         }
       }
     }
@@ -196,7 +222,7 @@ const actions = {
       * */
       for (let i = 0; i < store.goodsInfo.length ; i++ ){
         if (store.goodsInfo[i].goodsId === data.goodsId){
-          console.log("id相同,触发更新")
+          // id相同触发更新
           /*
           * try 中更新
           * */
@@ -206,10 +232,13 @@ const actions = {
             isDecrement:false
           }
           await Api.updateShoppingCartGoodsInfo(newData).then((res)=>{
-            console.log(res)
             if(res.code === 200){
               context.commit(TYPES.ADD_TO_CART_STATE,data)
               has = true
+              Message({
+                type:"success",
+                message:"添加成功！"
+              })
             }
           }).catch((err)=>{
             console.log(err)
@@ -223,11 +252,13 @@ const actions = {
       * 触发 try 中插入
       * */
       if(!has){
-        console.log("触发插入1")
         Api.addShoppingCartGoodsItem(data).then((res)=>{
-          console.log(res)
           if(res.code === 200){
             context.commit(TYPES.ADD_TO_CART_STATE,data)
+            Message({
+              type:"success",
+              message:"添加成功！"
+            })
           }
         }).catch((err)=>{
           console.log(err)
@@ -239,13 +270,15 @@ const actions = {
       * try 中假设不成立，商店信息不存在
       * 触发 catch中 插入
       * */
-      console.log("触发插入2")
       //context.rootState.userInfo.user.userId
 
       Api.addShoppingCartGoodsItem(data).then((res)=>{
-        console.log(res)
         if(res.code === 200){
           context.commit(TYPES.ADD_TO_CART_STATE,data)
+          Message({
+            type:"success",
+            message:"添加成功！"
+          })
         }
       }).catch((err)=>{
         console.log(err)
@@ -270,9 +303,9 @@ const actions = {
         userId:context.rootState.userInfo.user.userId
       }
       Api.getShoppingCartGoodsList(data).then((res)=>{
-        console.log(res)
         if (res.code === 200)
         {
+          context.commit('stateInit')
           context.commit(TYPES.SET_CART_STATE,res.data)
           resolve(res)
         }

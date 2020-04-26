@@ -52,10 +52,11 @@
         <span class="total-price">
           合计: {{totalPriceGetter}}
         </span>
-        <button class="settle">
+        <el-button class="settle" :disabled="beCheckedArrGetter.length === 0" @click="handleSettle">
           结算
-        </button>
+        </el-button>
       </div>
+      <i class="el-icon-arrow-right cls-btn" @click="showCart"/>
     </div>
 </template>
 
@@ -80,7 +81,6 @@
           console.log("发生了改变",newvalue)
           this.setCartState()
         }
-
       }
     },
     mounted () {
@@ -96,11 +96,12 @@
       ...mapState('commonState',['isCartOpen']),
       ...mapState('userInfo',['user']),
       ...mapState('cartState',['storeInfo','totalPrice']),
-      ...mapGetters('cartState',['totalPriceGetter']),
+      ...mapGetters('cartState',['totalPriceGetter','beCheckedArrGetter']),
       ...mapGetters('userInfo',['getUserInfo']),
 
     },
     methods:{
+      ...mapActions('commonState',['showCart']),
       ...mapActions('cartState',['setStoreChecked','setAllStoreChecked','setCartState']),
       ...mapMutations('cartState',[DECRE_GOODS_NUM,INCRE_GOODS_NUM]),
       reduceGoodsNum(item){
@@ -134,11 +135,19 @@
       handleStoreSelect(store){
         this.setStoreChecked(store)
       },
+      handleSettle(){
+        this.$router.push({
+          name:'BuyNowConfirm',
+          params:{fromCart:true}
+        })
+        this.showCart()
+      },
       selectAll(){
         this.storeInfo.forEach((item)=>{
           this.setAllStoreChecked(item)
         })
-      }
+      },
+
     }
   }
 </script>
@@ -147,19 +156,52 @@
 
 
 .cart-container{
-  background: #f5f6f7;
+
   width:380px;
-  height:60vh;
+  height:100vh;
   border-radius: 5px 0 0 5px;
   position: fixed;
   right: 0;
-  bottom: 50%;
+  top: 0;
   z-index: 999;
-  transform: translateY(50%);
+  background: #eaeaea;
   transition: all .5s cubic-bezier(.22,.5,.16,1.66);
 
   box-shadow: 0 0 15px -10px rgba(0,0,0,.6), 1px 1px 15px -10px rgba(0,0,0,.5)
 ;
+  &::before{
+    content: '';
+    width: 60px;
+    height: 60px;
+    background: #ffffff;
+    position:absolute;
+    left:0;
+    top:50%;
+    z-index: 0;
+    transform:translateX(-30%) translateY(-50%) rotate(90deg);
+    -webkit-clip-path: polygon(100% 0,80% 100%, 20% 100%, 0 0)
+
+  }
+  &::after{
+    content: '';
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,.5);
+    position: absolute;
+    left: -100vw;
+    top: 0;
+    z-index: -1;
+  }
+  .cls-btn{
+    cursor: pointer;
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateX(-100%) translateY(-50%);
+    z-index: 1;
+    height: 64px;
+    line-height: 64px;
+  }
   .cart-header{
     background: #ffffff;
     margin-bottom: 10px;

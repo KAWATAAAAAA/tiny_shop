@@ -38,7 +38,7 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 )
-export default function ajax(url,type="GET",data={},contentType = 'application/json') {
+export default function ajax(url,type="GET",data={},opts = {}) {
   let promise
   let dataString = ""
   /*
@@ -60,13 +60,13 @@ export default function ajax(url,type="GET",data={},contentType = 'application/j
       promise = axios.get(url)
     }break;
     case 'POST':{
-      promise = axios.post(url,data)
+      promise = axios.post(url,data,opts)
     }break;
     case 'PUT':{
-      promise = axios.put(url,data)
+      promise = axios.put(url,data,opts)
     }break;
     case 'PATCH':{
-      promise = axios.patch(url,data)
+      promise = axios.patch(url,data,opts)
     }break;
   }
 

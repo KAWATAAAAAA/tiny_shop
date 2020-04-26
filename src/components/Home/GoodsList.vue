@@ -15,6 +15,6 @@
   width:100%;
   height: 900px;
   background: white;
-  border:1px solid red;
+  *border:1px solid red;
 }
 </style>

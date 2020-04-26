@@ -1,6 +1,6 @@
 <template>
   <div class="status-confirm-wrapper">
-    <el-steps :space="200" :active="0" finish-status="success" simple >
+    <el-steps :space="200" :active="1" finish-status="success" simple >
       <el-step title="确认订单信息"></el-step>
       <el-step title="付款到支付宝"></el-step>
       <el-step title="确认收货"></el-step>

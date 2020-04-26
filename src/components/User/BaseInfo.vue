@@ -1,6 +1,6 @@
 <template>
     <div class="info-container">
-      <ul v-if="$route.params.id == user.userId" class="info-wrapper">
+      <ul v-if="$route.params.userId == user.userId" class="info-wrapper">
         <li>
           <span>
             <svg class="icon" aria-hidden="true">

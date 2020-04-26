@@ -56,6 +56,8 @@
         this.activeIndex = index
         this.activeAddress = this.addressArr[index].detailAddress
         console.log(index)
+        console.log(this.addressArr[index].addressId)
+        this.$emit('handleAddressChange',this.addressArr[index].addressId)
       },
       handleSelect(index){
 
@@ -80,7 +82,8 @@
 
 <style scoped lang="scss">
 .address-confirm-wrapper{
-  min-height: 40%;
+  max-height: 30%;
+  overflow-y: auto;
   background: #FFffff;
   *border:1px solid red;
   position: relative;
@@ -95,7 +98,7 @@
     text-align: left;
   }
   .address-item{
-    width: 60%;
+    width: 80%;
     padding:1rem 1rem;
     text-indent: 1rem;
     &:hover{
@@ -103,8 +106,10 @@
       /*box-shadow: 0  1px 18px -14px red,
       0 -1px 18px -14px red
     ;*/
-      border-bottom: 1px dashed #FF4400;
-      border-top: 1px dashed #FF4400;
+      background: #eaeaea;
+      border-radius: 5px  ;
+      /*border-bottom: 1px dashed #FF4400;
+      border-top: 1px dashed #FF4400;*/
     }
     .custom-input-container{
 

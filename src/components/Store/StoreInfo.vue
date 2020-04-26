@@ -58,7 +58,7 @@
     },
     mounted () {
       let data ={
-        id:this.$route.params.id
+        id:this.$route.params.storeId
       }
       Api.getStoreInfo(data).then( res=>{
         console.log(res)

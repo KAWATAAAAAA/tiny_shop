@@ -84,7 +84,7 @@
     },
     mounted () {
       let data = {
-        storeId:this.$route.params.id,
+        storeId:this.$route.params.storeId,
         sort:"none",
         minPrice:0,
         maxPrice:0,
@@ -118,7 +118,7 @@
         console.log(val)
 
         let data = {
-             storeId:this.$route.params.id,
+             storeId:this.$route.params.storeId,
              sort:this.sort,
              minPrice:this.minPrice,
              maxPrice:this.maxPrice,

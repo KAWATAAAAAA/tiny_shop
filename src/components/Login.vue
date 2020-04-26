@@ -75,8 +75,7 @@
             window.localStorage.setItem('token',data.token)
             window.sessionStorage.setItem('userStatus',JSON.stringify(true))
             this.setToken(data) //记录token
-            this.setStatus() // 设置用户状态
-            this.setUserInfo({data})
+            this.setUserInfo()
             this.$message({
               type:'success',
               message:'登录成功！'

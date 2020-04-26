@@ -37,7 +37,16 @@ const Api = {
   addAddressItem: (data) => ajax('/address/address-item', 'POST', data),
   getAddressList: () => ajax('/address/address-list', 'GET'),
   getAddressItem: (data) => ajax('/address/address-item', 'GET', data),
-  updateAddressItem: (data) => ajax('/address/address-item', 'PATCH', data)
+  updateAddressItem: (data) => ajax('/address/address-item', 'PATCH', data),
+
+  /*订单操作*/
+  createOrder: (data) => ajax('/order/stage-one','POST',data),
+  updateOrderInfo:(data) => ajax('/order/stage-two','PATCH',data),
+  toAliPayPage:(data) => ajax('/alipay/pay-page','POST',data),
+  getOrderHistoryList:(data) => ajax('/order/order-history','GET',data),
+  getGoodsGroup:(data,opts) => ajax('/goods/goods-group','GET',data,opts),
+  updateOrderStatusCompleted:(data) => ajax('/order/stage-four','PATCH',data),
+  deleteOrderItem:(data,opts) => ajax('/order/order-history','POST',data,opts)
 }
 
 
