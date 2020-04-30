@@ -5,15 +5,21 @@
         <span><el-tag  effect="dark" :type="statusStyleFilter(item.orderStatus)" @click="handelOrderComplete(item.orderStatus,index)">{{item.orderStatus | orderStatusFilter}}</el-tag></span>
 
         <span>
-          <span v-for="(goodsId,key) in item.goodsIdList" :key="key">
-            <img :src="imgViewFilter(goodsId)" >
+          <span v-for="(goods,key) in item.goodsList" :key="key">
+            <img :src="goods.goodsPreviewImg" >
           </span>
         </span>
-        <span>共{{item.goodsIdList.length}}件商品</span>
-        <span>订单编号: <i>{{item.orderId}}</i></span>
+        <span>共{{item.goodsList.length}}件商品</span>
+          <span>订单编号: <i>{{item.orderId}}</i></span>
         <span>￥{{item.orderTotalPrice}}</span>
         <span><i>{{item.orderTime | orderTimeFilterFormat}}</i></span>
-        <span><el-button type="info" size="mini" plain @click="handelDeleteOrderItem(item.orderId)">删除</el-button></span>
+        <span>
+          <el-popconfirm title="确定删除这条订单吗？" @onConfirm="handelDeleteOrderItem(item.orderId)">
+            <el-button slot="reference" type="info" size="mini" plain >删除</el-button>
+          </el-popconfirm>
+        </span>
+
+
       </div>
     </div>
     <el-dialog
@@ -25,8 +31,10 @@
       center>
       <component :is="dialog.component"
                  :orderHistoryList="orderHistoryList"
-                 :goodsCollection="goodsCollection"
                  :index="actionOrderIndex"
+                 :status="actionOrderStatus"
+                 @setDialog="handelDialogClose"
+                 @getList="getList"
 
       />
     </el-dialog>
@@ -44,8 +52,9 @@
     data(){
       return {
         orderHistoryList:[], // 历史订单列表
-        goodsCollection:[], // 获取到的不重复的 商品信息数组,
-        actionOrderIndex:"" //点击后弹出的订单信息的下标
+
+        actionOrderIndex:"", //点击后弹出的订单信息的下标
+        actionOrderStatus:""
       }
     },
     mixins:[DialogMixin],
@@ -75,24 +84,6 @@
         let res = await Api.getOrderHistoryList()
         if(res && res.code === 200){
           this.orderHistoryList = res.data
-          let params = {
-            goodsIdList: new Set()
-          }
-          for(const item of res.data)
-            for(const id of item.goodsIdList)
-              params.goodsIdList.add(id)
-
-          params.goodsIdList = Array.from(params.goodsIdList)
-          let opts = {
-            headers:{
-              'Content-Type':'application/x-www-form-urlencoded'
-            }
-          }
-          let res1 = await Api.getGoodsGroup(params,opts)
-          if(res1 && res1.code === 200)
-          {
-            this.goodsCollection = res1.data
-          }
         }else{
           this.$message({
             type:'error',
@@ -145,10 +136,11 @@
         this.setDialog()
       },
       handelOrderComplete(statusCode,index){
-        if (statusCode == '4' || statusCode == '5' || statusCode == '6')
+        if (statusCode != 0)
         {
-          this.actionOrderIndex = index
 
+          this.actionOrderIndex = index
+          this.actionOrderStatus = statusCode
           this.setDialog(
             true,
             '',
@@ -192,7 +184,11 @@
         margin-left: .5rem;
       }
     }
-
+    > span:nth-child(1){
+      &:hover{
+        cursor: pointer;
+      }
+    }
     > span:nth-child(2){
       width: 200px;
       padding: 0;
@@ -209,6 +205,10 @@
     }
     > span:nth-child(3){
       color:#409eff;
+      text-decoration: underline ;
+      &:hover{
+        cursor: pointer;
+      }
     }
     > span:nth-child(4){
       width: 192px;

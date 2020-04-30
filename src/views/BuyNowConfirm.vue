@@ -52,10 +52,11 @@
 
       let params = {
         orderTotalPrice:this.totalPriceGetter,
-        goodsIdList:[]
+        goodsList:[]
       }
       this.beCheckedArrGetter.forEach((item)=>{
-        params.goodsIdList.push(item.goodsId)
+
+        params.goodsList.push(item)
       })
 
       Api.createOrder(params).then(res=>{

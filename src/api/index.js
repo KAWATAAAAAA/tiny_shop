@@ -45,8 +45,12 @@ const Api = {
   toAliPayPage:(data) => ajax('/alipay/pay-page','POST',data),
   getOrderHistoryList:(data) => ajax('/order/order-history','GET',data),
   getGoodsGroup:(data,opts) => ajax('/goods/goods-group','GET',data,opts),
-  updateOrderStatusCompleted:(data) => ajax('/order/stage-four','PATCH',data),
-  deleteOrderItem:(data,opts) => ajax('/order/order-history','POST',data,opts)
+  updateOrderStatusPayCompleted:(data) => ajax('/order/stage-four','PATCH',data),
+  updateOrderStatusCompleted:(data) => ajax('/order/stage-seven','PATCH',data),
+  deleteOrderItem:(data,opts) => ajax('/order/order-history','POST',data,opts),
+
+  /*数据中心*/
+  getMonthSaleData:(data)=> ajax('/data-center/base-data','GET',data)
 }
 
 

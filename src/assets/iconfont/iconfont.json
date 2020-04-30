@@ -7,6 +7,13 @@
 ",
   "glyphs": [
     {
+      "icon_id": "5330452",
+      "name": "图表",
+      "font_class": "tubiao",
+      "unicode": "e794",
+      "unicode_decimal": 59284
+    },
+    {
       "icon_id": "554425",
       "name": "定位",
       "font_class": "iconset0392",

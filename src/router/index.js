@@ -10,9 +10,11 @@ import OrderHistory from '../components/User/OrderHistory'
 import StoreEdit from '../components/Store/StoreEdit'
 import AddGoods from '../components/Store/AddGoods'
 import MyGoodsList from '../components/Store/MyGoodsList'
+import DataCenterChartView from '../components/Store/DataCenterChartView'
 import AddAddress from '../components/AddAddress'
 import AddressInfo from '../components/BuyNowConfirm/AddressInfo'
 import AddressEdit from '../components/AddressEdit'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -74,7 +76,8 @@ const routes = [
         name: 'OrderHistory',
         meta: { requiresAuth: true },
         component: OrderHistory
-      }
+      },
+
     ]
 
   },
@@ -95,6 +98,12 @@ const routes = [
         component: AddGoods,
         meta: { requiresAuth: true }
       },
+      {
+        path:'DataCenterChartView',
+        name:'DataCenterChartView',
+        component:DataCenterChartView,
+        meta: { requiresAuth: true }
+      }
 
     ]
   },

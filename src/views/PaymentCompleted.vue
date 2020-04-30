@@ -27,7 +27,8 @@
         xAngle:"",
         tmpAngle:"",
         orderInfo:{
-          orderId:""
+          orderId:"",
+          orderTotalPrice:""
         }
       }
     },
@@ -36,7 +37,10 @@
       let reg = /out_trade_no=(\d*)(&|$)/
       let str = location.href
       this.orderInfo.orderId = str.match(reg)[1]
-      console.log(this.orderInfo.orderId)
+
+      reg = /total_amount=(\d*.\d*)(&|$)/
+      console.log(str.match(reg))
+      this.orderInfo.orderTotalPrice = str.match(reg)[1]
       this.sendRequest()
     },
     methods:{
@@ -86,7 +90,7 @@
         requestAnimationFrame(this.drawArc)
       },
       sendRequest(){
-        Api.updateOrderStatusCompleted(this.orderInfo).then(res=>{
+        Api.updateOrderStatusPayCompleted(this.orderInfo).then(res=>{
           console.log(res)
         })
 
