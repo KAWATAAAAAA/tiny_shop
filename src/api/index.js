@@ -1,6 +1,10 @@
 import ajax from './axios.config';
 
 const Api = {
+
+  /*home*/
+  getHopGoodsList:() => ajax('/goods/goods-top','GET'),
+
   /*普通：用户登录、注册*/
   signIn: (data) => ajax('/user/login', "GET", data),
   signUp: (data) => ajax('/user/register', "POST", data),
@@ -50,7 +54,8 @@ const Api = {
   deleteOrderItem:(data,opts) => ajax('/order/order-history','POST',data,opts),
 
   /*数据中心*/
-  getMonthSaleData:(data)=> ajax('/data-center/base-data','GET',data)
+  getMonthSaleData:(data)=> ajax('/data-center/base-data','GET',data),
+  getTotalSalesVolume:(data) => ajax('/data-center/sales-volume','GET',data)
 }
 
 

@@ -17,12 +17,12 @@
           <li>
 
             <i class="iconfont ext-icon-completed" id="ext-icon-completed"/>
-            总销售量：65</li>
+            总销售量：{{totalSalesVolume}}</li>
           <li>
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#ext-icon-shijian"></use>
             </svg>
-            开店时间：{{$moment(store.openTime).format("YYYY-DD-MM")}}</li>
+            开店时间：{{$moment(store.openTime).format("YYYY-MM-DD")}}</li>
         </ul>
       </div>
       <div class="base-bottom">
@@ -50,7 +50,8 @@
           ownerRealName:"",
           userId:"",
           openTime:""
-        }
+        },
+        totalSalesVolume:0
       }
     },
     mounted () {
@@ -68,6 +69,16 @@
           alert("查询错误")
       }).catch( err =>{
         console.log(err)
+      })
+
+      data = {
+        storeId:this.$route.params.storeId
+      }
+      Api.getTotalSalesVolume(data).then( res =>{
+        if (res.code === 200)
+        {
+          this.totalSalesVolume = res.data
+        }
       })
     }
   }

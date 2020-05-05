@@ -7,11 +7,13 @@
 <script>
   import echarts from 'echarts'
   import Api from '../../api'
+  import moment from 'moment'
   export default {
       name: "DataCenterChartView",
       data(){
           return{
-            chartLine:""
+            chartLine:"",
+            dataResult:[]
           }
       },
       async created () {
@@ -21,11 +23,13 @@
         let res = await Api.getMonthSaleData(params)
         if(res && res.code === 200)
         {
+          this.dataResult = res.data
+          this.initEcharts()
           console.log(res)
         }
       },
       mounted() {
-        this.initEcharts()
+
         this.$nextTick(() => {
           window.onresize = () => {
             this.chartLine.resize()
@@ -34,6 +38,7 @@
       },
       computed:{
           timeLine(){
+/*
             let arr = []
             let s = ""
             for(let i = 0 ;i < 24 ; i++)
@@ -44,8 +49,38 @@
                 s = `${i}`
               arr.push(`${s}:00`)
             }
+            console.log(arr)
             return arr
           }
+*/
+
+
+            let arr = []
+
+            for(const item of this.dataResult){
+              arr.push(moment(item.completedTime).format("HH:mm:ss"))
+            }
+
+            return arr
+          },
+          yAmount(){
+            let arr = []
+
+            for(const item of this.dataResult){
+              arr.push(item.amount)
+            }
+
+            return arr
+
+          },
+        ySaleVol(){
+          let arr = []
+
+          for(const item of this.dataResult){
+            arr.push(item.goodsNum)
+          }
+          return arr
+        }
       },
       methods:{
         initEcharts(){
@@ -85,15 +120,14 @@
                 }
               },
             },
-
-            //设置区分（哪条线属于什么）
             legend: {
               bottom: 30,
               left: '40%',
-              data:['请求1','请求2'],  // 匹配 series 中的 name
+              data:['总金额','销量'],  // 匹配 series 中的 name
             },
+
             // 与上面一一对应
-            color: ['#8AE09F', '#FA6F53'],
+            color: ['#ff0000', '#8AE09F'],
             //设置x轴
             xAxis: {
               type: 'category', //数据为不连续的，多种数据的时候，为该类型时必须通过 data 设置类目数据
@@ -110,38 +144,52 @@
                 alignWithLabel:true
               }
             },
-            yAxis:{
-              name: '销售量 / 总金额',
-              type: 'value', // y 轴设置这个 自动根据
-              nameTextStyle:{
-                color:'#ff0000',
-                fontWeight:'bold'
+            yAxis:[
+              {
+                name: '总金额',
+                type: 'value', // y 轴设置这个 自动根据
+                nameTextStyle:{
+                  color:'#ff0000',
+                  fontWeight:'bold'
+                },
+                axisLine:{
+                  symbol:['none','arrow'],
+                  symbolOffset:[0, 8]//箭头距离两端的距离,可为负数
+                },
               },
-              axisLine:{
-                symbol:['none','arrow'],
-                symbolOffset:[0, 8]//箭头距离两端的距离,可为负数
-              },
-            },
+              {
+                name: '销量',
+                type: 'value', // y 轴设置这个 自动根据
+                nameTextStyle:{
+                  color:'#8AE09F',
+                  fontWeight:'bold'
+                },
+                axisLine:{
+                  symbol:['none','arrow'],
+                  symbolOffset:[0, 8]//箭头距离两端的距离,可为负数
+                },
+              }
+            ],
             series: [
               {
-                name: '请求1',
-                data:  [220, 232, 201, 234, 290, 230, 220],
+                name: '总金额',
+                data:  this.yAmount,
+                type: 'line',               // 类型为折线图
+                lineStyle: {                // 线条样式 => 必须使用normal属性
+                  normal: {
+                    color: '#ff0000',
+                  }
+                }
+              },
+              {
+                name: '销量',
+                data:  this.ySaleVol,
                 type: 'line',               // 类型为折线图
                 lineStyle: {                // 线条样式 => 必须使用normal属性
                   normal: {
                     color: '#8AE09F',
                   }
                 }
-              },
-              {
-                name: '请求2',
-                data: [120, 200, 150, 80, 70, 110, 130],
-                type: 'line',
-                lineStyle: {
-                  normal: {
-                    color: '#FA6F53',
-                  }
-                },
               }
             ],
             grid: {

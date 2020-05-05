@@ -1,24 +1,26 @@
 <template>
     <div class="hot-list">
       <div class="hot-title">热销产品</div>
-      <div class="hot-item" v-for="goods in hotItems" :key="goods.id">
-        <img :src="goods.goodsImg">
+      <div class="hot-item" v-for="goods in hotItems" :key="goods.id" v-show="goods.goodsSalesVol > 0">
+        <img :src="goods.goodsPreviewImg">
         <div class="hot-name" :title="goods.goodsName">
           {{goods.goodsName}}
         </div>
         <div class="hot-sales">
-          月销{{goods.goodsSales}}
+          销量：{{goods.goodsSalesVol}}
         </div>
       </div>
     </div>
 </template>
 
 <script>
+  import Api from '../../api'
   export default {
     name: 'HotGoods',
     data(){
       return{
         hotItems:[
+          /*
           {
             goodsID:'2',
             goodsImg:require('../../assets/images/goodsPic/loreal.png'),
@@ -37,7 +39,15 @@
             goodsName:'欧莱雅小蜜罐金致臻颜花蜜奢养女保湿滋润抗皱面霜50ml',
             goodsSales:'514'
           },
+          */
         ]
+      }
+    },
+    async created () {
+      let res =  await Api.getHopGoodsList()
+      if(res && res.code === 200)
+      {
+        this.hotItems = res.goodsInfo
       }
     }
   }
@@ -71,9 +81,12 @@
     }
   }
   .hot-item{
+    *{
+      *border:1px solid red;
+    }
     width: 100%;
     height: 70px;
-    *border: 1px solid red;
+
     position: relative;
     display: flex;
     flex-direction: row;
@@ -82,14 +95,15 @@
     align-items: center;
 
     img{
-      width: 20%;
-      height: 45px;
+      width: 48px;
+      height: 48px;
 
 
     }
 
     .hot-name{
-      max-width: 9rem;
+
+      width: 9rem;
       overflow: hidden;
       text-overflow:ellipsis;
       white-space: nowrap;
@@ -97,7 +111,9 @@
 
     }
     .hot-sales{
+      width: 5rem;
       color: #999999;
+      text-align: left;
     }
 
   }
