@@ -1,123 +1,86 @@
 <template>
-    <div class="add-goods-container">
-      <el-form :model="goodsInfo" :rules="rules" ref="goodsInfo" :class="{form:true}" status-icon class="demo-ruleForm" label-width="100px">
-        <el-form-item label="预览图 :">
-          <el-upload
-            class="avatar-uploader"
-            action=""
-            :headers="headers"
-            :show-file-list="false"
-            :http-request="uploadFile"
-            :before-upload="beforeLogoUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="宝贝名称 :" prop="goodsName">
-          <el-input v-model="goodsInfo.goodsName" placeholder="请输入内容"></el-input>
-        </el-form-item>
+  <div class="add-goods-container">
+    <el-form :model="goodsInfo" ref="goodsInfo" :class="{form:true}" status-icon class="demo-ruleForm" label-width="100px">
+      <img :src="goodsInfo.goodsPreviewImg" style="width: 80px;height: 80px">
+      <el-form-item label="预览图修改:" >
+        <el-upload
+          class="avatar-uploader"
+          action=""
+          :headers="headers"
+          :show-file-list="false"
+          :http-request="uploadFile"
+          :before-upload="beforeLogoUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
+      <el-form-item label="宝贝名称 :" prop="goodsName">
+        <el-input v-model="goodsInfo.goodsName" placeholder="请输入内容"></el-input>
+      </el-form-item>
 
-        <el-form-item label="宝贝单价 :" prop="goodsPrice">
-          <el-input v-model.number="goodsInfo.goodsPrice" placeholder="请输入内容"></el-input>
-        </el-form-item>
-        <el-form-item label="库存数 :" prop="goodsNum">
-          <el-input v-model.number="goodsInfo.goodsNum" placeholder="请输入内容"></el-input>
-        </el-form-item>
-        <el-form-item label="宝贝标签">
-          <TagsEdit :dynamicTags="dynamicTags" @addDynamicTag="addDynamicTag" @removeDynamicTag="removeDynamicTag" @collectDynamicTag="collectDynamicTag"/>
-        </el-form-item>
-        <el-form-item label="显色度" prop="colorRate">
-          <el-rate v-model="goodsInfo.colorRate"></el-rate>
-        </el-form-item>
-        <el-form-item label="持久度" prop="holdRate">
-          <el-rate v-model="goodsInfo.holdRate"></el-rate>
-        </el-form-item>
-        <el-form-item label="滋润度" prop="waterRate">
-          <el-rate v-model="goodsInfo.waterRate"></el-rate>
-        </el-form-item>
-        <el-form-item label="顺滑度"  prop="smoothRate">
-          <el-rate v-model="goodsInfo.smoothRate"></el-rate>
-        </el-form-item>
-        <el-form-item label="产品规格" prop="productSpe">
-          <el-input v-model.number="goodsInfo.productSpe" placeholder="请输入规格">
-            <el-button slot="append">g</el-button>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="保质期" prop="ExpTimeNum">
-          <el-input v-model.number="goodsInfo.ExpTimeNum" placeholder="请输入规格">
-            <el-button slot="append">个月</el-button>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="产品介绍" prop="goodsDesc">
-          <el-input type="textarea" v-model="goodsInfo.goodsDesc" :autosize="{ minRows: 2, maxRows: 16 }"></el-input>
-        </el-form-item>
-        <el-form-item label="温馨提示" prop="goodsTips">
-          <el-input type="textarea" v-model="goodsInfo.goodsTips"></el-input>
-        </el-form-item>
-        <el-form-item label=" " prop="accept">
-          <el-checkbox-group v-model="goodsInfo.accept">
-            <el-checkbox label="我已阅读" name="accept">我已阅读<router-link to="">《平台上架商品须知》</router-link></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label=" ">
-          <el-button type="primary" @click="submitForm('goodsInfo')">立即保存</el-button>
-          <el-button>取消</el-button>
-        </el-form-item>
-      </el-form>
+      <el-form-item label="宝贝单价 :" prop="goodsPrice">
+        <el-input v-model.number="goodsInfo.goodsPrice" placeholder="请输入内容"></el-input>
+      </el-form-item>
+      <el-form-item label="库存数 :" prop="goodsNum">
+        <el-input v-model.number="goodsInfo.goodsNum" placeholder="请输入内容"></el-input>
+      </el-form-item>
+      <el-form-item label="宝贝标签">
+        <TagsEdit :dynamicTags="dynamicTags" @addDynamicTag="addDynamicTag" @removeDynamicTag="removeDynamicTag" @collectDynamicTag="collectDynamicTag"/>
+      </el-form-item>
+      <el-form-item label="显色度" prop="colorRate">
+        <el-rate v-model="goodsInfo.colorRate"></el-rate>
+      </el-form-item>
+      <el-form-item label="持久度" prop="holdRate">
+        <el-rate v-model="goodsInfo.holdRate"></el-rate>
+      </el-form-item>
+      <el-form-item label="滋润度" prop="waterRate">
+        <el-rate v-model="goodsInfo.waterRate"></el-rate>
+      </el-form-item>
+      <el-form-item label="顺滑度"  prop="smoothRate">
+        <el-rate v-model="goodsInfo.smoothRate"></el-rate>
+      </el-form-item>
+      <el-form-item label="产品规格" prop="productSpe">
+        <el-input v-model.number="goodsInfo.productSpe" placeholder="请输入规格">
+          <el-button slot="append">g</el-button>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="保质期" prop="ExpTimeNum">
+        <el-input v-model.number="goodsInfo.expTimeNum" placeholder="请输入规格">
+          <el-button slot="append">个月</el-button>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="产品介绍" prop="goodsDesc">
+        <el-input type="textarea" v-model="goodsInfo.goodsDesc" :autosize="{ minRows: 2, maxRows: 16 }"></el-input>
+      </el-form-item>
+      <el-form-item label="温馨提示" prop="goodsTips">
+        <el-input type="textarea" v-model="goodsInfo.goodsTips"></el-input>
+      </el-form-item>
 
+      <el-form-item label=" ">
+        <el-button type="primary" @click="submitForm('goodsInfo')">立即保存</el-button>
+        <el-button type="danger" @click="handelDeleted">删除</el-button>
+        <el-button @click="$emit('handelDialogClose')">取消</el-button>
 
-    </div>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script>
   import {mapState,mapActions} from 'vuex'
   import Api from '../../api'
-
   import TagsEdit from './TagsEdit'
   export default {
-    name: 'AddGoods',
+    name: 'GoodsInfoDetail',
     components:{
       TagsEdit
     },
+    props:{
+      goodsInfo:[Object]
+    },
     data () {
-      let valiGoodsName = (rule, value, callback) => {
-        setTimeout(() => {
-          if (value.length < 1) {
-            console.log('err')
-            callback(new Error('请输入至少一位字符作为名称'));
-          }
-          else
-            callback();
-        }, 1000);
-      };
-      let valiGoodsPrice = (rule, value, callback) => {
-        setTimeout( ()=>{
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          }
-          else
-            callback()
-        },1000)
-      };
-      let valiGoodsNum = (rule, value, callback) => {
-        setTimeout( ()=>{
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          }
-          else
-            callback()
-        },1000)
-      };
-      let valiAccept = (rule, value, callback) =>{
-        setTimeout( ()=>{
-          if (value)
-            callback()
-          else
-            callback(new Error("请查看协议并勾选"))
-        },1000)
-      }
       return {
-        goodsInfo:{
+       /* goodsInfo:{
           goodsPreviewImg:"",
           goodsName:"",
           goodsPrice:"",
@@ -131,24 +94,11 @@
           waterRate:0,
           smoothRate:0,
           productSpe:0,
-          expTimeNum:0,
+          ExpTimeNum:0,
           goodsDesc:"",
           goodsTips:""
-        },
-        rules:{
-          goodsName: [
-            { validator: valiGoodsName, trigger: 'blur' }
-          ],
-          goodsPrice: [
-            { validator: valiGoodsPrice, trigger: 'blur' }
-          ],
-          goodsNum: [
-            { validator: valiGoodsNum, trigger: 'blur' }
-          ],
-          accept: [
-            { validator: valiAccept, trigger: 'blur' }
-          ]
-        },
+        },*/
+
         imageUrl: '',
         /*children component state*/
         dynamicTags:[
@@ -173,28 +123,35 @@
       ...mapActions('userInfo',['setUserInfo']),
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
-          if (valid) {
+
             console.log(this.goodsInfo)
-            Api.setGoodsInfo(this.goodsInfo).then( res=>{
+            Api.updateGoodsInfo(this.goodsInfo).then( res=>{
               if (res.code === 200){
-                //this.$router.push({name:'MyGoodsList'})
                 this.$message({
                   type:'success',
                   message:res.data
                 })
-                this.$refs[formName].resetFields() //清除表单信息
-                this.imageUrl = "" //清除图片
-                this.dynamicTags.splice(5) // 清除 tags列表
-                this.goodsInfo.goodsLabel.length = 0; //清除已收集的 tags 列表
+                this.$emit('handelDialogClose')
               }
             }).catch( err =>{
               console.log(err)
             })
-          } else {
-            alert('请将数据填写完整')
-            return false;
-          }
+
         });
+      },
+      handelDeleted(){
+        Api.deleteGoodsInfo(this.goodsInfo).then( res=>{
+          if (res.code === 200){
+            this.$message({
+              type:'success',
+              message:res.data
+            })
+            this.$emit('handelDialogClose')
+            this.$emit('reTodoInit')
+          }
+        }).catch( err =>{
+          console.log(err)
+        })
       },
       //自定义实现覆盖默认的上传操作
       uploadFile(param){
@@ -252,7 +209,7 @@
           this.dynamicTags.push(inputValue);
           this.goodsInfo.goodsLabel.push(val)
         }
-       // this.inputValue = '';
+        // this.inputValue = '';
       },
       removeDynamicTag(tag){
         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);

@@ -15,8 +15,8 @@
       return{
         images:[
 
-          require("../../assets/images/loop1.png"),
-          require("../../assets/images/loop2.png"),
+         /* require("../../assets/images/loop1.png"),
+          require("../../assets/images/loop2.png"),*/
         ]
       }
     },

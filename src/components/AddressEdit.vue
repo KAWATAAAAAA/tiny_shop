@@ -39,6 +39,7 @@
   import {regionData,CodeToText} from 'element-china-area-data'
   import {mapState} from 'vuex'
   import Api from '../api'
+  import LS from '../static/js/LogStyle'
   export default {
     name: 'AddressEdit',
     data(){
@@ -57,6 +58,7 @@
       ...mapState('userInfo',['user'])
     },
     mounted () {
+      console.log(" %c Edit 已经被加载",LS.lightRed)
       let data = {
         addressId:this.$route.params.id
       }

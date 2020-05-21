@@ -68,6 +68,10 @@
           {
             let data = this.newInfo
             this.setUserInfo({data})
+            this.$message({
+              type:'success',
+              message:'修改成功'
+            })
           }
         }).catch( err =>{
 

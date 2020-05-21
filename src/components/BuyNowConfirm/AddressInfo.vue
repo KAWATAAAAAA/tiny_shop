@@ -16,7 +16,7 @@
         <el-link type="primary" @click="toAddNewAddressItem">新增地址</el-link>
       </div>
     </div>
-    <div class="address-placeholder" v-if="addressArr.length === 0">收货地址列表为空，快去吧！<router-link :to="{name:'AddressEdit'}">添加</router-link></div>
+    <div class="address-placeholder" v-if="addressArr.length === 0">收货地址列表为空，快去<router-link :to="{name:'AddressEdit'}">添加</router-link></div>
   </div>
 </template>
 

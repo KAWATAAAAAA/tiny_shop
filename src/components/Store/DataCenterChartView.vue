@@ -53,8 +53,6 @@
             return arr
           }
 */
-
-
             let arr = []
 
             for(const item of this.dataResult){
@@ -164,10 +162,8 @@
                   color:'#8AE09F',
                   fontWeight:'bold'
                 },
-                axisLine:{
-                  symbol:['none','arrow'],
-                  symbolOffset:[0, 8]//箭头距离两端的距离,可为负数
-                },
+                offset:80,
+                position:'left'
               }
             ],
             series: [

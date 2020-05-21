@@ -7,9 +7,9 @@
       add tab
     </el-button-->
     <div class="char-title">
-      与xxx的聊天
+      
     </div>
-    <el-tabs v-model="editableTabsValue"  :tab-position="tabPosition" type="card" closable @tab-remove="removeTab">
+    <el-tabs v-model="editableTabsValue"  :tab-position="tabPosition" type="card" closable @tab-remove="removeTab" @tab-click="handelTabClick">
       <el-tab-pane
         v-for="(item) in editableTabs"
         :key="item.name"
@@ -18,6 +18,11 @@
 
       >
       <div class="message-container">
+       <!-- <div v-for="(msg,index) in receivedHistoryMessageList" :key="index" class="received-item">{{msg}}</div>
+        <div v-for="(msg,index) in sendHistoryMessageList" :key="index" class="send-item">{{msg}}</div>-->
+        <div v-for="(msgEntity,index) in messageQueue" :key="index" :class="{'send-item':user.userId == msgEntity.from,'received-item':user.userId != msgEntity.from}" :style="{width:`${msgEntity.from.length + msgEntity.content.length}rem`}">
+          {{msgEntity.from}}:{{msgEntity.content}}
+        </div>
       </div>
       <div class="send-container">
         <textarea class="send-body" v-model="sendBody">
@@ -34,13 +39,17 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+  import Api from '../api'
+  import UserAvatar from './UserAvatar'
   export default {
     name:"Chat",
     data() {
       return {
+        websocket:{},
         sendBody:"",
         tabPosition:"left",
-        editableTabsValue: '5',
+        editableTabsValue: '1',// 打开 editableTabs item中的 name 一致的窗口
         editableTabs: [
           {
             title: 'Tab 1',
@@ -53,12 +62,57 @@
             content: 'Tab 2'
           }
         ],
-        tabIndex: 2
+        ws:{},
+        tabIndex: 2,
+        userList:[],
+        extCompoent:UserAvatar,
+        sendHistoryMessageList:[],
+        receivedHistoryMessageList:[],
+        messageQueue:[],
+        that:{}
       }
+    },
+    created () {
+      //this.WebSocketTest()
+    },
+    watch:{
+      userList:{
+        deep:true,
+        handler:function () {
+          this.editableTabs = []
+          for (const item of this.userList)
+          {
+            this.editableTabs.push({
+              title:item.userNickName,
+              name:item.userId + '',
+              img:item.userAvatar
+            })
+          }
+        }
+      }
+    },
+    mounted () {
+      this.that = this
+      Api.getActiveUserList().then(res=>{
+        console.log(res)
+        if (res.code === 200)
+        {
+          this.userList = res.data
+          this.tabIndex = this.userList.length
+        }
+      })
+
+    },
+    computed:{
+      ...mapState('userInfo',['user'])
     },
     methods: {
       sendMessage(){
-
+        this.ws.send(this.sendBody)
+      },
+      handelTabClick(tab){
+        //console.log(tab)
+        this.WebSocketTest(tab.name)
       },
       addTab(targetName) {
         let newTabName = ++this.tabIndex + '';
@@ -85,6 +139,67 @@
 
         this.editableTabsValue = activeName;
         this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+      },
+      WebSocketTest(userId) {
+        if ("WebSocket" in window)
+        {
+          //alert("您的浏览器支持 WebSocket!");
+
+          // 打开一个 web socket，建立连接
+          let ws
+
+          ws = new WebSocket(`ws://localhost:8080/tiny_shop/websocket/${userId}`)
+
+          // 建立连接时触发
+          ws.onopen = function()
+          {
+            // Web Socket 已连接上，使用 send() 方法发送数据
+
+          };
+
+          let that = this.that
+          // 客户端接收服务端数据时触发
+          ws.onmessage = function (evt)
+          {
+
+            let res = JSON.parse(evt.data)
+            console.log(res)
+            if (!res.from){
+              that.$notify({
+                title:'提示',
+                type:'success',
+                message:'已发出消息，但对方不在线 ',
+                position: 'bottom-right'
+              })
+
+              that.sendHistoryMessageList.push(res.content)
+              that.messageQueue.push(res)
+              return
+            }
+            if(that.user.userId == res.from){
+              console.log("这条信息是自己发出去的")
+              that.sendHistoryMessageList.push(res.content)
+              that.messageQueue.push(res)
+            }else {
+              console.log("这条信息是从别人那边收到的")
+              that.receivedHistoryMessageList.push(res.content)
+              that.messageQueue.push(res)
+            }
+          };
+
+          ws.onclose = function()
+          {
+            // 关闭 websocket
+            alert("连接已关闭...");
+          };
+
+          this.ws = ws
+        }
+
+        else
+        {
+          alert("您的浏览器不支持 WebSocket!");
+        }
       }
     }
   }
@@ -112,6 +227,29 @@
     height: 80%;
     border-bottom: 1px solid #cccccc;
     background: #ffffff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 1rem;
+    .received-item{
+      width: auto;
+      padding: .5rem;
+      background: #ff4400;
+      color: #ffffff;
+      border-radius: 5px;
+      align-self: flex-start;
+    }
+    .send-item{
+      width: auto;
+      padding: .5rem;
+      background: #03a9f4;
+      color: #ffffff;
+      border-radius: 5px;
+      align-self: flex-end;
+    }
   }
 
   .send-container{

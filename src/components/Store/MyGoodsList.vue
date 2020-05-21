@@ -14,7 +14,7 @@
     </div>
     <div class="g-body">
 
-      <div class="g-box" v-for="(item,index) in goodsInfo" :key="index">
+      <div class="g-box" v-for="(item,index) in goodsInfo" :key="index" @click="handelDisplayDetailGoodsInfo(index)">
         <div class="g-preview">
           <img :src="item.goodsPreviewImg" />
         </div>
@@ -39,7 +39,22 @@
         @current-change="handleCurrentChange"
       >
       </el-pagination>
+
+
     </div>
+    <el-dialog
+      :append-to-body="true"
+      :title="dialog.title"
+      :visible.sync="dialog.visible"
+      :width="dialog.width"
+      @close="handelDialogClose"
+      center>
+      <component :is="dialog.component"
+                 :goodsInfo="goodsInfo[goodsIndexOf]"
+                 @handelDialogClose="handelDialogClose"
+                 @reTodoInit="init"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -47,13 +62,17 @@
   import Api from '../../api'
   import SearchFilter from './SearchFilter'
   import {mapState,mapActions} from 'vuex'
+  import {DialogMixin} from '../../static/utils/mixins'
+  import GoodsInfoDetail from './GoodsInfoDetail'
   export default {
     name: 'MyGoodsList',
     components:{
       SearchFilter
     },
+    mixins:[DialogMixin],
     data(){
       return{
+        goodsIndexOf:0,
         total:0,//总条数，后端赋值
         pageSize:12, //每页的最大条数
         currentPage:1, //默认打开页
@@ -83,27 +102,30 @@
       ...mapState('commonState',['goodsInfo'])
     },
     mounted () {
-      let data = {
-        storeId:this.$route.params.storeId,
-        sort:"none",
-        minPrice:0,
-        maxPrice:0,
-        currentPage:1,
-        size:this.pageSize
-      }
-      Api.getGoodsList(data).then(res=>{
-        if (res.code === 200)
-        {
-          console.log(res)
-          this.total = res.data.total
-          this.setGoodsInfo(res.data.goodsInfo)
-        }
-      }).catch(err=>{
-
-      })
+      this.init()
     },
     methods:{
       ...mapActions('commonState',['setGoodsInfo']),
+      init(){
+        let data = {
+          storeId:this.$route.params.storeId,
+          sort:"none",
+          minPrice:0,
+          maxPrice:0,
+          currentPage:1,
+          size:this.pageSize
+        }
+        Api.getGoodsList(data).then(res=>{
+          if (res.code === 200)
+          {
+            console.log(res)
+            this.total = res.data.total
+            this.setGoodsInfo(res.data.goodsInfo)
+          }
+        }).catch(err=>{
+
+        })
+      },
       handleCurrentChange(val){
         /*
         * 载入页面是普通分页查询
@@ -141,7 +163,17 @@
 
         })
       },
-
+      handelDisplayDetailGoodsInfo(index){
+        this.goodsIndexOf = index
+        this.setDialog(
+          true,
+          '',
+          GoodsInfoDetail
+        )
+      },
+      handelDialogClose(){
+        this.setDialog()
+      },
       setCurrentPage(val){
         this.currentPage = val
       },
@@ -195,6 +227,9 @@
       box-shadow: 0px 0px 10px -8px rgba(0,0,0,.8);
       border-radius: 5px;
       position: relative;
+      &:hover{
+        cursor: pointer;
+      }
       .g-preview{
         width: 100%;
         border-bottom: 1px solid #eaeaea;

@@ -43,7 +43,7 @@
            <li><router-link :to="{name:'BaseInfo'}"><i class="iconfont ext-icon-Personal" style="color: #02b5da"/>个人信息</router-link></li>
            <li @click="showCart"><i class="iconfont ext-icon-iconset0316" style="color: #fb7299"/>购物袋</li>
            <li><i class="iconfont ext-icon-order" style="color: #00c091"/><router-link :to="{name:'OrderHistory'}">订单列表</router-link></li>
-           <li><i class="iconfont ext-icon-xihuan" style="color: #ff5d47"/>收藏</li>
+           <li v-if="false"><i class="iconfont ext-icon-xihuan" style="color: #ff5d47"/>收藏</li>
            <li><router-link :to="{name:'AddressInfo'}"><i class="iconfont ext-icon-shouhuotuihuo" style="color: #FFCC33"/>我的收货地址</router-link></li>
          </ul>
          <ul v-else>
@@ -109,10 +109,13 @@
       console.log(this.user.userId)
       console.log(this.$route.params.id)
       console.log(this.$route.params.id == this.user.userId)*/
+     console.log(this.$route.params)
+     console.log(this.user.userId)
       if (this.$route.params.userId != this.user.userId){ // 查询的是其他用户的信息，带上id
         let data = {
           id:this.$route.params.userId
         }
+        console.log(data)
         Api.getUserInfo(data).then( res => {
           console.log(res)
           if (res.code === 200)

@@ -21,6 +21,7 @@
         lineWidth:"",
         centerX:"",
         centerY:"",
+
         r:"",
         sAngle:"",
         eAngle:"",
@@ -71,6 +72,10 @@
         {
           this.ctx.fillStyle = '#50dc47'
           this.ctx.fill()
+          this.ctx.fillStyle = '#ffffff';
+          this.ctx.font= 35 + 'px Microsoft Yahei';
+          this.ctx.textAlign='center';
+          this.ctx.fillText("支付完成",this.centerX,this.centerX,this.r + 35 / 2)
           this.canvasClass = true
           return
         }
@@ -86,7 +91,11 @@
         this.ctx.arc(this.centerX,this.centerY,this.r,this.sAngle,this.tmpAngle)
         this.ctx.stroke()
         this.ctx.closePath()
-
+//写字
+        /*this.ctx.fillStyle = '#1d89d5';
+        this.ctx.font= 35 + 'px Microsoft Yahei';
+        this.ctx.textAlign='center';
+        this.ctx.fillText( Math.round((this.tmpAngle -  this.sAngle) / (this.eAngle - this.sAngle) * 100) + '%', this.r, this.r , 35 / 2);*/
         requestAnimationFrame(this.drawArc)
       },
       sendRequest(){

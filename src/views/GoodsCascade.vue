@@ -30,10 +30,11 @@
           </div>
           <div class="g-sale">销量：{{item.goodsSalesVol}}</div>
           <div class="g-label">
-            <span v-for="(label,index) in item.goodsLabel" :key="index">{{label}} </span>
+            <span v-for="(label,indexOf) in item.goodsLabel" :key="indexOf">{{label}} </span>
           </div>
           <div class="store-info">
             店铺：{{item.storeName}}
+            <el-button type="text" size="middle" @click="handelDisplayDetailGoodsInfo(item)">查看</el-button>
             <span class="add-to-cart" @click="addToCart(item)">
               <i class="iconfont ext-icon-iconset0316" />
               <span class="animate-assis"></span>
@@ -41,6 +42,7 @@
               <span class="animate-assis"></span>
 
             </span>
+
           </div>
 
         </div>
@@ -54,16 +56,32 @@
       <p v-if="loading">加载中...</p>
       <p v-if="noMore">没有更多了</p>
     </div>
+
+    <el-dialog
+      :append-to-body="true"
+      :title="dialog.title"
+      :visible.sync="dialog.visible"
+      :width="dialog.width"
+      @close="handelDialogClose"
+      center>
+      <component :is="dialog.component"
+                 :goodsInfo="tempGoodsInfo"
+                 @handelDialogClose="handelDialogClose"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import Api from '../api'
   import SearchFilter from '../components/Store/SearchFilter'
-
+  import GoodsInfoDetail from './GoodsInfoDetail'
   import { mapActions, mapState } from 'vuex'
+  import { DialogMixin } from '../static/utils/mixins'
+  //
   export default {
     name: 'GoodsCascade',
+    mixins:[DialogMixin],
     data(){
       return{
         total:0, // 页面条数上限
@@ -79,6 +97,8 @@
         maxPrice:0,  //由子组件赋值，本组件维护状态做分页
         goodsName:"",//由子组件赋值，本组件维护状态做分页
         goodsLabel:"",//由子组件赋值，本组件维护状态做分页
+
+        tempGoodsInfo:{}
       }
     },
     components:{
@@ -191,7 +211,19 @@
       },
       setGoodsName(val){
         this.goodsName = val
-      }
+      },
+      handelDisplayDetailGoodsInfo(goodsInfo){
+        this.tempGoodsInfo = goodsInfo
+        console.log(goodsInfo)
+        this.setDialog(
+          true,
+          '',
+          GoodsInfoDetail
+        )
+      },
+      handelDialogClose(){
+        this.setDialog()
+      },
     }
   }
 </script>
@@ -285,7 +317,7 @@
           text-align: left;
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: space-around;
 
           .add-to-cart{
             display: inline-block;

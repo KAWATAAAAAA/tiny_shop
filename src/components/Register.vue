@@ -127,7 +127,7 @@
                   type:'success',
                   message:"注册成功，正在跳转！"
                 })
-                this.$router.push('/user/login')
+                this.$router.push('/login')
               }
             }).catch(err =>{
 

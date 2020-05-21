@@ -29,7 +29,7 @@
         <ul class="store-actions">
           <li><router-link :to="{name:'MyGoodsList'}"><i class="iconfont ext-icon-baobei" id="ext-icon-baobei"/>我的宝贝</router-link> </li>
           <li><router-link :to="{name:'AddGoods'}"><i class="iconfont ext-icon-shangjia1" id="ext-icon-shangjia1"/>发布宝贝</router-link></li>
-          <li><i class="iconfont ext-icon-order" id="ext-icon-order"/>订单中心</li>
+          <li v-if="false"><i class="iconfont ext-icon-order" id="ext-icon-order"/>订单中心</li>
           <li><router-link :to="{name:'DataCenterChartView'}"><i class="iconfont ext-icon-tubiao" id="ext-icon-tubiao" />数据中心</router-link></li>
         </ul>
       </div>

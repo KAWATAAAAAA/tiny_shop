@@ -10,6 +10,6 @@ module.exports = {
       new webpack.ProvidePlugin({
 
       })
-    ]
+    ],
   }
 }

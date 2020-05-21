@@ -11,7 +11,8 @@
 
       </div>
     </div>
-    <div class="address-placeholder" v-if="addressArr.length === 0">收货地址列表为空，快去吧！<router-link :to="{name:'AddressEdit'}">添加</router-link></div>
+    <!--<div class="address-placeholder" v-if="addressArr.length === 0">收货地址列表为空，快去吧7777！<router-link :to="{path:`/user/${user.userId}/AddressInfo`}">添加</router-link></div>-->
+    <div class="address-placeholder" v-if="addressArr.length === 0">收货地址列表为空，快去<router-link :to="{path:`/user/${user.userId}`}">添加</router-link></div>
   </div>
 </template>
 

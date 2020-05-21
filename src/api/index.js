@@ -29,6 +29,8 @@ const Api = {
 
   /*商户：商品上架*/
   setGoodsInfo: (data) => ajax('/goods/goods-info', 'PUT', data),
+  updateGoodsInfo: (data) => ajax('/goods/goods-info', 'PATCH', data),
+  deleteGoodsInfo: (data) => ajax('/goods/goods-info', 'POST', data),
   /*商户：获取商品列表*/
   getGoodsList: (data) => ajax('/goods/goods-list', 'GET', data),
 
@@ -46,7 +48,7 @@ const Api = {
   /*订单操作*/
   createOrder: (data) => ajax('/order/stage-one','POST',data),
   updateOrderInfo:(data) => ajax('/order/stage-two','PATCH',data),
-  toAliPayPage:(data) => ajax('/alipay/pay-page','POST',data),
+  toAliPayPage:(data) => ajax('/alipay/pay-page','POST',data), // 废弃
   getOrderHistoryList:(data) => ajax('/order/order-history','GET',data),
   getGoodsGroup:(data,opts) => ajax('/goods/goods-group','GET',data,opts),
   updateOrderStatusPayCompleted:(data) => ajax('/order/stage-four','PATCH',data),
@@ -55,7 +57,11 @@ const Api = {
 
   /*数据中心*/
   getMonthSaleData:(data)=> ajax('/data-center/base-data','GET',data),
-  getTotalSalesVolume:(data) => ajax('/data-center/sales-volume','GET',data)
+  /* 数据中心 - 主页*/
+  getTotalSalesVolume:(data) => ajax('/data-center/sales-volume','GET',data),
+
+  /*主页*/
+  getActiveUserList:(data) => ajax('/link/user-list','GET',data)
 }
 
 

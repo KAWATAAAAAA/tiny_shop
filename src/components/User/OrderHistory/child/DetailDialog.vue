@@ -18,6 +18,9 @@
           <div class="confirm-area" v-if="status == 4 || status == 5 || status == 6">
             <el-button type="danger" size="small" @click="handelOrderConfirm(orderHistoryList[index].orderId)">确认收货</el-button>
           </div>
+          <div class="confirm-area" v-if="status == 3">
+            <el-button type="danger" size="small" @click="handelRePay(orderHistoryList[index].orderId)">重新发起支付</el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -54,6 +57,13 @@
           this.$emit('setDialog') //as handelDialogClose in parent component
           this.$emit('getList')
         }
+      },
+      async handelRePay(){
+        let id = this.orderHistoryList[this.index].orderId
+        let price = this.orderHistoryList[this.index].orderTotalPrice
+        let mk = this.orderHistoryList[this.index].orderRemarks
+        let name = this.orderHistoryList[this.index].goodsList[0].goodsName
+        window.location.href = `http://localhost:8080/tiny_shop/alipay/pay-page?orderId=${id}&totalPrice=${price}&orderName=${name}等三件商品&orderRemarks=${mk}`
       }
 
     }

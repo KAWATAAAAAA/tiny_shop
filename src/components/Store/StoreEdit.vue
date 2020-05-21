@@ -153,9 +153,12 @@
           if (valid) {
             Api.settledIn(this.storeInfo).then( res =>{
               console.log(res)
-
-              this.$router.push({name:'Store'})
-
+              this.$message({
+                type:'success',
+                message:res.data
+              })
+              this.$router.push({path:`/user/${this.user.userId}`})
+this.$router.go(0)
             }).catch( err =>{
               console.log(err)
             })
